@@ -36,18 +36,25 @@ def printAllPages(soup_list):
 
 
 def organizeTorrentsToSeries(urls):
-    series = []
+    series_dictionary = {} #dict holding all series -> torrents within series
+
+
     for url in urls:
-        series[findSeriesName(url)].append(url)
-    return series
+        series_name = findSeriesName(url)
+        if series_name not in series_dictionary:
+            series_dictionary[series_name] = [] #create new list for given series in dictionary
+
+        series_dictionary[series_name].append(url) #add url to the dictionary list for it's series
+
+    return series_dictionary
     #Should sort all tuples into lists for their respective series.
     #Should throw away torrents with 0 seeders
     #Must have a method for defining what series it belongs to based on name of torrent.
         #Standard naming convention seems to be [subgroup] seriesname     episode etc
     #Should only keep torrents containing the given resolution. 720p 360p etc.
     #Should calculate total size of files in these torrents. (tlistsize) is field
-    #TODO define
-    return 0
+
+
 
 #finds the name of a series based on the naming-convention [Subgroup] name - episode
 def findSeriesName(url):
