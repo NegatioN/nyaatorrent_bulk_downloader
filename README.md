@@ -5,3 +5,5 @@ My objective with this program is to let the user be able to select from all ser
 Also the user should be able to select a resolution for the torrent to download.
 
 My plan for doing this is currently relying in large part, on regex-checking names of torrents after getting the soup of all pages with relevant torrents.
+
+My program "BulkTorrentDownloader" in theory already does these things, but through another site which requires a lot more HTTP GET-calls, and has a lot less versatility.
