@@ -14,28 +14,31 @@ def test(url, query):
 
 #test method
 def printAllPages(soup_list):
+    tuples = []
     while soup_list:
-        createTorrentTuple(soup_list.pop())
+        createTorrentTuples(soup_list.pop(), tuples)
 
-#returns a list of torrentpages with a title + info.
-def createTorrentTuple(page_soup):
+    for url, name, size in tuples:
+        print("url:" + url + " name: " + name + " size: " + str(size))
+
+#takes in the soup of a single page, a list to append tuples to
+#returns a list of all torrents that match search with url, name, size(in kb)
+def createTorrentTuples(page_soup, tuples):
     #STRUCTURE = Tbody -> tr class tlistrow -> td
     table = page_soup.find_all("table", {'class': 'tlist'})
+
     #TODO get td class tlistname, tlistdownload, tlistsize, tlisticon -> a == http://www.nyaa.se/?cats=1_37  (english)
     #for td in page_soup.findAll('td'):
     for td in table:
         for tr in td.find_all("tr"): #each row
             for a in tr.find_all('a', {'href': 'http://www.nyaa.se/?cats=1_37'}): #for each tr in category "English subbed"
+                tuples.append(createTuple(tr))
                 #TODO keep the TR in array of soup-objects? Iterate upon these later?
                 #for current purposes we need url, size, determine what series it belongs to. way to sort out duplicates
                 #and only of a spesific resolution.
-                for tlistname in tr.find_all("td", {'class': 'tlistname'}): #get something from this TR
-                    print(tr)
-
-            #print(a)
 
 
-    return 0
+    return tuples
 
 #returns a tuple with download_url, torrent_name, torrent_size
 #takes in a soup-object's TR-row.
@@ -45,7 +48,7 @@ def createTuple(tr_soup):
     size_text = tr_soup.find('td', {'class':'tlistsize'}).contents[0]
     torrent_size = getTorrentSize(size_text)                                #computes the size of the torrent in kilobytes
 
-    torrent_tuple = download_url, torrent_name, torrent_size                #compounds all fields into tuple
+    torrent_tuple = (download_url, torrent_name, torrent_size)                #compounds all fields into tuple
 
     return torrent_tuple
 

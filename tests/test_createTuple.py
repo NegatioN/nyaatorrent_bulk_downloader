@@ -37,13 +37,21 @@ class TestCreateTuple(TestCase):
 
         return 0
     def test_createTuple(self):
-        parse_site.createTuple(self.case1)
-        parse_site.createTuple(self.case2)
-        parse_site.createTuple(self.case3)
-        parse_site.createTuple(self.case4)
-        parse_site.createTuple(self.case5)
+        tuple1 = parse_site.createTuple(self.case1)
+        tuple2 = parse_site.createTuple(self.case2)
+        tuple3 = parse_site.createTuple(self.case3)
+        tuple4 = parse_site.createTuple(self.case4)
+        tuple5 = parse_site.createTuple(self.case5)
 
-        self.fail()
+        tuples = []
+        tuples.append(tuple1)
+        tuples.append(tuple2)
+        tuples.append(tuple3)
+        tuples.append(tuple4)
+        tuples.append(tuple5)
+        for url, name, size in tuples:
+            print("url:" + url + " name: " + name + " size: " + str(size))
+
 
 
 
