@@ -48,7 +48,7 @@ def createTuple(tr_soup):
         torrent_seeders = int(torrent_seeders.contents[0])
     else:                               #if the site has failed to find number of seeders we disregard the torrent
         torrent_seeders = 0
-    if torrent_seeders > 0:
+    if torrent_seeders > 0:             #disregards parsing all other fields if there are 0 seeders
         download_url = tr_soup.find('td', {'class':'tlistdownload'}).a['href']  #gets link to download torrent directly
         torrent_name = tr_soup.find('td', {'class':'tlistname'}).a.contents[0]  #gets name of torrent
         size_text = tr_soup.find('td', {'class':'tlistsize'}).contents[0]
