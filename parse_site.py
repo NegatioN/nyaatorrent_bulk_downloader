@@ -18,8 +18,13 @@ def printAllPages(soup_list):
     while soup_list:
         createTorrentTuples(soup_list.pop(), tuples)
 
-    for url, name, size in tuples:
-        print("url:" + url + " name: " + name + " size: " + str(size))
+    series_dictionary = organizeTorrentsToSeries(tuples)
+    for key, series_urls in series_dictionary.items():
+        if len(series_urls) > 5:
+            print(key)
+            print(str(series_urls[0]/1024) + " MiB" )
+            for url in series_urls:
+                print(url)
 
 #takes in the soup of a single page, a list to append tuples to
 #returns a list of all torrents that match search with url, name, size(in kb)
@@ -53,18 +58,20 @@ def createTuple(tr_soup):
     return torrent_tuple
 
 #should take in a tuple with download_url, torrent_name, torrent_size
-def organizeTorrentsToSeries(urls):
+def organizeTorrentsToSeries(torrent_tuples):
     series_dictionary = {} #dict holding all series -> torrents within series
 
 
-    for torrent_name in urls:
-        series_name = findSeriesName(torrent_name)
+    for torrent_url,torrent_name,torrent_size in torrent_tuples:
+        series_name = findSeriesName(torrent_name)                  #get name of series from torrent_name
         if isCorrectResolution(torrent_name,720):
 
             if series_name not in series_dictionary:
-                series_dictionary[series_name] = [] #create new list for given series in dictionary
-
-            series_dictionary[series_name].append(torrent_name) #add url to the dictionary list for it's series
+                #create new list for given series in dictionary
+                series_dictionary[series_name] = [torrent_size]     #size is always available at index 0
+            else:
+                series_dictionary[series_name][0] += torrent_size   #size is always available at index 0
+            series_dictionary[series_name].append(torrent_url)     #add url to the dictionary list for it's series
 
     return series_dictionary
     #Should sort all tuples into lists for their respective series.
@@ -109,7 +116,10 @@ def getTorrentSize(size_string):
 #finds the name of a series based on the naming-convention [Subgroup] name - episode
 def findSeriesName(url):
     string_array = re.split('(]|-)',url)
-    return string_array[2].strip()  #for now index 2 should be the title. strip to remove trailing whitespace
+    if len(string_array) > 2:
+        return string_array[2].strip()  #for now index 2 should be the title. strip to remove trailing whitespace
+    else:
+        return url
 
 #creates a list of soup with all the pages with a torrent in them
 def getAllSoup(url, query):
