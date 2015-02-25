@@ -17,6 +17,9 @@ def createTorrentTuple(page_soup):
     for td in table:
         for tr in td.find_all("tr"): #each row
             for a in tr.find_all('a', {'href': 'http://www.nyaa.se/?cats=1_37'}): #for each tr in category "English subbed"
+                #TODO keep the TR in array of soup-objects? Iterate upon these later?
+                #for current purposes we need url, size, determine what series it belongs to. way to sort out duplicates
+                #and only of a spesific resolution.
                 for tlistname in tr.find_all("td", {'class': 'tlistname'}): #get something from this TR
                     print(tlistname)
 
@@ -25,26 +28,30 @@ def createTorrentTuple(page_soup):
 
     return 0
 
-def test(url, query):
-    soup_list = getAllSoup(url, query)
-    printAllPages(soup_list)
+#TODO create tuple of download_url, torrent_name, torrent_size
+#returns a tuple with download_url, torrent_name, torrent_size
+#takes in a soup-object's TR-row.
+def createTuple(tr_soup):
+    download_url = ""
+    torrent_name = ""
+    torrent_size = getTorrentSize("")
+    torrent_tuple = download_url, torrent_name, torrent_size
 
-#test method
-def printAllPages(soup_list):
-    while soup_list:
-        createTorrentTuple(soup_list.pop())
+    return torrent_tuple
 
-
+#should take in a tuple with download_url, torrent_name, torrent_size
 def organizeTorrentsToSeries(urls):
     series_dictionary = {} #dict holding all series -> torrents within series
 
 
-    for url in urls:
-        series_name = findSeriesName(url)
-        if series_name not in series_dictionary:
-            series_dictionary[series_name] = [] #create new list for given series in dictionary
+    for torrent_name in urls:
+        series_name = findSeriesName(torrent_name)
+        if isCorrectResolution(torrent_name,720):
 
-        series_dictionary[series_name].append(url) #add url to the dictionary list for it's series
+            if series_name not in series_dictionary:
+                series_dictionary[series_name] = [] #create new list for given series in dictionary
+
+            series_dictionary[series_name].append(torrent_name) #add url to the dictionary list for it's series
 
     return series_dictionary
     #Should sort all tuples into lists for their respective series.
@@ -54,7 +61,34 @@ def organizeTorrentsToSeries(urls):
     #Should only keep torrents containing the given resolution. 720p 360p etc.
     #Should calculate total size of files in these torrents. (tlistsize) is field
 
+#determines if the current torrent_name tested has the resolution we want
+def isCorrectResolution(torrent_name, resolution):  #takes string, int
+    resolution = str(resolution) + 'p'  #example 720 becomes 720p
+    regex = re.compile(resolution)
+    if regex.search(torrent_name) is not None:
+        return True
+    else:
+        return False
 
+#TODO define method for computing total torrent_size based on string-input
+#example: 258.3 MB, 13.7 GB, 200 KB
+#returns size as int in KB size
+def getTorrentSize(size_string):
+    size_string = size_string.lower() #convert to lowercase for easier matching
+    kb = "kb"
+    mb = "mb"
+    gb = "gb"
+    regex = re.compile(kb)
+    if regex.search(size_string) is not None:
+        return 0
+    regex = re.compile(mb)
+    if regex.search(size_string) is not None:
+        return 0
+    regex = re.compile(gb)
+    if regex.search(size_string) is not None:
+        return 0
+    #if no match, assume size is less than one kb and return 1
+    return 1
 
 #finds the name of a series based on the naming-convention [Subgroup] name - episode
 def findSeriesName(url):
