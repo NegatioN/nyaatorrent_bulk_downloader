@@ -7,6 +7,15 @@ import re
 #TODO Note, &Sort=2 is sorted decending by most seeders
 #TODO note http://www.nyaa.se/?cats=1_37 is english translated anime  (make option to only have english-subbed anime)
 
+#test method
+def test(url, query):
+    soup_list = getAllSoup(url, query)
+    printAllPages(soup_list)
+
+#test method
+def printAllPages(soup_list):
+    while soup_list:
+        createTorrentTuple(soup_list.pop())
 
 #returns a list of torrentpages with a title + info.
 def createTorrentTuple(page_soup):
@@ -21,21 +30,22 @@ def createTorrentTuple(page_soup):
                 #for current purposes we need url, size, determine what series it belongs to. way to sort out duplicates
                 #and only of a spesific resolution.
                 for tlistname in tr.find_all("td", {'class': 'tlistname'}): #get something from this TR
-                    print(tlistname)
+                    print(tr)
 
             #print(a)
 
 
     return 0
 
-#TODO create tuple of download_url, torrent_name, torrent_size
 #returns a tuple with download_url, torrent_name, torrent_size
 #takes in a soup-object's TR-row.
 def createTuple(tr_soup):
-    download_url = ""
-    torrent_name = ""
-    torrent_size = getTorrentSize("")
-    torrent_tuple = download_url, torrent_name, torrent_size
+    download_url = tr_soup.find('td', {'class':'tlistdownload'}).a['href']  #gets link to download torrent directly
+    torrent_name = tr_soup.find('td', {'class':'tlistname'}).a.contents[0]  #gets name of torrent
+    size_text = tr_soup.find('td', {'class':'tlistsize'}).contents[0]
+    torrent_size = getTorrentSize(size_text)                                #computes the size of the torrent in kilobytes
+
+    torrent_tuple = download_url, torrent_name, torrent_size                #compounds all fields into tuple
 
     return torrent_tuple
 
@@ -70,10 +80,11 @@ def isCorrectResolution(torrent_name, resolution):  #takes string, int
     else:
         return False
 
-#TODO define method for computing total torrent_size based on string-input
 #example: 258.3 MB, 13.7 GB, 200 KB
 #returns size as int in KB size
 def getTorrentSize(size_string):
+    if size_string == "":
+        return 0
     size_string = size_string.lower() #convert to lowercase for easier matching
     size = float(re.split('\s',size_string)[0]) #should leave size as the first index of array returned
     kb = "kib"
