@@ -75,20 +75,22 @@ def isCorrectResolution(torrent_name, resolution):  #takes string, int
 #returns size as int in KB size
 def getTorrentSize(size_string):
     size_string = size_string.lower() #convert to lowercase for easier matching
-    kb = "kb"
-    mb = "mb"
-    gb = "gb"
+    size = float(re.split('\s',size_string)[0]) #should leave size as the first index of array returned
+    kb = "kib"
+    mb = "mib"
+    gb = "gib"
     regex = re.compile(kb)
     if regex.search(size_string) is not None:
-        return 0
+        return size
     regex = re.compile(mb)
     if regex.search(size_string) is not None:
-        return 0
+        return size*1024
     regex = re.compile(gb)
     if regex.search(size_string) is not None:
-        return 0
+        return size*1024*1024
     #if no match, assume size is less than one kb and return 1
     return 1
+
 
 #finds the name of a series based on the naming-convention [Subgroup] name - episode
 def findSeriesName(url):
