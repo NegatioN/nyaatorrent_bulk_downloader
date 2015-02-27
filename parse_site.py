@@ -3,10 +3,11 @@ __author__ = 'NegatioN'
 import requests
 from bs4 import BeautifulSoup
 import organize_info as oi
-import re
+import regex_treatment as rt
 
 #TODO Note, &Sort=2 is sorted decending by most seeders
 #TODO note http://www.nyaa.se/?cats=1_37 is english translated anime  (make option to only have english-subbed anime)
+#TODO write object oriented python? define class for "Torrent". use getEpisode() etc.
 
 #test method
 def test(url, query):
@@ -15,18 +16,18 @@ def test(url, query):
 
 #test method
 def printAllPages(soup_list):
-    tuples = []
+    torrents = []
     while soup_list:
-        oi.createTorrentTuples(soup_list.pop(), tuples)
+        oi.createTorrentList(soup_list.pop(), torrents)
 
-    series_dictionary = oi.organizeTorrentsToSeries(tuples)
-    for key, series_urls in series_dictionary.items():
-        if len(series_urls) > 5:                        #says that only lists with more than 5 objects should actually
+    series_dictionary = oi.organizeTorrentsToSeries(torrents)
+    for key, series_torrents in series_dictionary.items():
+        if len(series_torrents) > 5:                        #says that only lists with more than 5 objects should actually
                                                         #be output to user.
             print(key)
             #print(str(series_urls[0]/1024) + " MiB" )
-            for url in series_urls:
-                print(url)
+            for torrent in series_torrents:
+                print(torrent.getName())
 
 
 
@@ -56,7 +57,6 @@ def getAllSoup(url, query):
     return soup_list
 
 #finds all the pages with torrents in them in the first page returned by search. //up to 29. putting down soft-limit.
-#TODO implement get up to 100 pages? use rightpages and find limit there.
 def getPagesWithTorrents(soup,url_with_query):
 
     url_list = createUrlList(url_with_query, extractLastPageNumber(soup))
@@ -71,7 +71,7 @@ def getContents(url):
         raise SystemExit('\n' + str(e))
     return cont
 
-#TODO define method that gets last page number
+#TODO implement producer/consumer threads
 def extractLastPageNumber(soup):
     #should get from div class rightpages  (2 instances)
     # anchor class "page pagelink", last instance get
@@ -81,13 +81,7 @@ def extractLastPageNumber(soup):
     for a in rightpages[0].findAll('a'):
         pageUrls.append(a['href'])
 
-    return getPageNumber(pageUrls.pop())
-
-#takes in string url, split its and returns the digit at the end.
-def getPageNumber(anchor):
-    array = re.split('(\d+)',anchor)
-
-    return int(array[-2])    #leaves a trailing whitespace? so we go 2 indices back
+    return rt.getPageNumber(pageUrls.pop())
 
 def createUrlList(baseurl_with_query, limit_page_num):
     i = 1
