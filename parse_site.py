@@ -5,9 +5,7 @@ from bs4 import BeautifulSoup
 import organize_info as oi
 import regex_treatment as rt
 
-#TODO Note, &Sort=2 is sorted decending by most seeders
-#TODO note http://www.nyaa.se/?cats=1_37 is english translated anime  (make option to only have english-subbed anime)
-#TODO write object oriented python? define class for "Torrent". use getEpisode() etc.
+#TODO always get trusted torrents first, where no duplicates. Blue rows. class="aplus tlistrow"
 
 #test method
 def test(url, query):
@@ -21,13 +19,18 @@ def printAllPages(soup_list):
         oi.createTorrentList(soup_list.pop(), torrents)
 
     series_dictionary = oi.organizeTorrentsToSeries(torrents)
+    outputInformation(series_dictionary)
+
+
+def outputInformation(series_dictionary):
     for key, series_torrents in series_dictionary.items():
-        if len(series_torrents) > 5:                        #says that only lists with more than 5 objects should actually
-                                                        #be output to user.
-            print(key)
-            #print(str(series_urls[0]/1024) + " MiB" )
+        if len(series_torrents) > 5:                  #says that only lists with more than 5 objects should be output
+            totalSize = 0
             for torrent in series_torrents:
-                print(torrent.getName())
+                totalSize += torrent.getSize()
+            totalSize = totalSize/1024/1024   #outbout gb
+            sizeString = "{0:.2f}".format(totalSize)            #format with two decimals
+            print(key + " - " + str(len(series_torrents)) + " episodes - " + sizeString + " GiB")
 
 
 

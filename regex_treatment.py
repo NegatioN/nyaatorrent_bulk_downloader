@@ -26,9 +26,7 @@ def isCorrectResolution(torrent_name, resolution):  #takes string, int
 #Checks if the episode has already been added to the series-list of torrents
 def episodeAlreadyAdded(series, in_episode):
     for torrent in series:
-        print(str(in_episode) + " vs " + str(torrent.getEpisode()))
         if in_episode == torrent.getEpisode():
-            print("TRUE")
             return True
     return False
 

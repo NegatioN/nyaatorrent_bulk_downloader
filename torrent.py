@@ -6,6 +6,7 @@ import re
 #constructor currently takes in a tr_soup from beautifulsoup4
 class Torrent:
     is_series = False
+    is_aplus = False    #manually verified torrents by nyaa.se that is optimal quality.
     episode_number = 0
     url = ""
     name = ""
@@ -26,6 +27,8 @@ class Torrent:
         if not self.is_series:                  #doesnt make sense to set episode number if it's a complete series.
             self.episode_number = findEpisodeNumber(self.name)
 
+        self.is_aplus = findAPlus(tr_soup)
+
 
     #Get-methods, don't know if this is the standard in Python
     def getIsSeries(self):
@@ -40,6 +43,8 @@ class Torrent:
         return self.size
     def getSeeders(self):
         return self.seeders
+    def getIsAplus(self):
+        return self.is_aplus
 
 ####METHODS THAT ARE CALLED ON INIT OF TORRENT-OBJECT ######
 
@@ -85,4 +90,10 @@ def findSeeders(torrent_seeders):
         return int(seeders)
     except:
         return 0
+
+def findAPlus(tr_soup):
+    try:
+        return tr_soup['class'][0] == 'aplus'   #checks for the aplus tlistrow class-tag on nyaa.se
+    except:
+        False
 
