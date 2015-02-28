@@ -1,15 +1,15 @@
 __author__ = 'NegatioN'
 
 class Series:
-    name = ""
-    torrent_list = []
 
     def __init__(self, series_name ):
         self.name = series_name
+        self.torrent_list = []
 
     #Adds a torrent to the torrent_list if it's missing
     def addTorrent(self, torrent):
         if not episodeAlreadyAdded(self.torrent_list, torrent.getEpisode()): #add episode only if it's missing.
+            #print(self.name + " added: " + torrent.getName())
             self.torrent_list.append(torrent)
 
     ### GETTERS AND SETTERS ####

@@ -29,6 +29,7 @@ def outputInformation(series_dictionary):
     i = 0
     for key, series in series_dictionary.items():
         series_torrents = series.getTorrents()
+
         if len(series_torrents) > 5:                  #says that only lists with more than 5 objects should be output
             i += 1
             sizeString = "{0:.2f}".format(series.getSize())            #format with two decimals
