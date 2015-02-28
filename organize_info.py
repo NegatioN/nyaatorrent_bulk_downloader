@@ -4,9 +4,7 @@ import regex_treatment as rt
 import torrent as tor
 import re
 import series as ser
-#TODO remove duplicate episeodes.
 #TODO let user choose resolution to download.
-#TODO if series has a file with "All episodes", keep only this? or archive separately
 #TODO implement console-input
 #TODO implement stop parsing when we find a torrent with 0 seeders. we're searching through list sorted by seeders
 #TODO append OVA's somewhere? to the series?
@@ -18,7 +16,7 @@ def organizeTorrentsToSeries(torrents):
     series_dictionary = {} #dict holding all series -> torrents within series
 
     for torrent in torrents:
-        if torrent.getSeeders() > 0:                            #disregards the torrent if it has 0 seeders
+        if torrent.getSeeders() > 0:                 #disregards the torrent if it has 0 seeders
             series_name = rt.findSeriesName(torrent) #get name of series from torrent
             if rt.isCorrectResolution(torrent.getName(), 720):  #only keep torrents containing the given resolution. 720p 360p etc.
                 if torrent.getIsSeries():
@@ -45,4 +43,19 @@ def createTorrentList(page_soup, torrents):
             torrents.append(tor.Torrent(tr)) #creates a new torrent-object of the tr_soup
 
     return torrents
+
+#removes
+def outputSeries(series_dictionary):
+    sorted_series = []
+    for key, series in series_dictionary.items():
+        series_torrents = series.getTorrents()
+
+        #only output series with more than 5 torrents, or complete series_torrents, or A plus
+        if len(series_torrents) > 5 or series_torrents[0].getIsSeries() or series_torrents[0].getIsAplus():
+            sorted_series.append(series)
+
+
+    sorted_series.sort(key=lambda x: x.getAverageSeeders(), reverse=True) #sort list in place by seeders
+
+    return sorted_series
 

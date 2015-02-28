@@ -10,36 +10,27 @@ import series as ser
 #TODO check series-name with regards to whitespace/underscores
 #TODO implement show series if is_series
 
+def parse_query(url, query, resolution):
+    soup_list = getAllSoup(url, query)
+    return findAllSeries(soup_list)
+
+
 #test method
 def test(url, query):
     soup_list = getAllSoup(url, query)
-    printAllPages(soup_list)
+    sorted_series = findAllSeries(soup_list)
+    outputInformation(sorted_series)
 
 #test method
-def printAllPages(soup_list):
+def findAllSeries(soup_list):
     torrents = []
     while soup_list:
         oi.createTorrentList(soup_list.pop(), torrents)
 
     series_dictionary = oi.organizeTorrentsToSeries(torrents)
-    outputInformation(series_dictionary)
+    sorted_series = oi.outputSeries(series_dictionary)
+    return sorted_series
 
-#outputs the dictionary of series to a string with info about each series
-def outputInformation(series_dictionary):
-    sorted_series = []
-    for key, series in series_dictionary.items():
-        series_torrents = series.getTorrents()
-
-        #only output series with more than 5 torrents, or complete series_torrents
-        if len(series_torrents) > 5 or series_torrents[0].getIsSeries():
-            sorted_series.append(series)
-
-    i = 0
-    for series in sorted_series:
-        i += 1
-        sizeString = "{0:.2f}".format(series.getSize())            #format with two decimals
-        average_seeders = "{0:.2f}".format(series.getAverageSeeders())
-        print("No. " + str(i) + " - " + series.getName() + " - " + str(len(series.getTorrents())) + " torrents - " + average_seeders + " average seeders - " + sizeString + " GiB")
 
 
 

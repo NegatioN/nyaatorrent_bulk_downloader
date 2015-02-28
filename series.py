@@ -30,6 +30,11 @@ class Series:
     def getAverageSeeders(self):
         return (self.seeders/len(self.torrent_list))
 
+    def toString(self):
+        sizeString = "{0:.2f}".format(self.getSize())            #format with two decimals
+        average_seeders = "{0:.2f}".format(self.getAverageSeeders())
+        return self.name + " - " + str(len(self.torrent_list)) + " torrents - " + average_seeders + " average seeders - " + sizeString + " GiB"
+
 
 #takes in a single series, and episode-number
 #Checks if the episode has already been added to the series-list of torrents
