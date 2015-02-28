@@ -6,6 +6,8 @@ import organize_info as oi
 import regex_treatment as rt
 
 #TODO always get trusted torrents first, where no duplicates. Blue rows. class="aplus tlistrow"
+#TODO check series-name with regards to whitespace/underscores
+#TODO implement show series if is_series
 
 #test method
 def test(url, query):
@@ -21,16 +23,18 @@ def printAllPages(soup_list):
     series_dictionary = oi.organizeTorrentsToSeries(torrents)
     outputInformation(series_dictionary)
 
-
+#outputs the dictionary of series to a string with info about each series
 def outputInformation(series_dictionary):
+    i = 0
     for key, series_torrents in series_dictionary.items():
         if len(series_torrents) > 5:                  #says that only lists with more than 5 objects should be output
+            i += 1
             totalSize = 0
             for torrent in series_torrents:
                 totalSize += torrent.getSize()
             totalSize = totalSize/1024/1024   #outbout gb
             sizeString = "{0:.2f}".format(totalSize)            #format with two decimals
-            print(key + " - " + str(len(series_torrents)) + " episodes - " + sizeString + " GiB")
+            print("No. " + str(i) + " - " + key + " - " + str(len(series_torrents)) + " episodes - " + sizeString + " GiB")
 
 
 
@@ -86,12 +90,14 @@ def extractLastPageNumber(soup):
 
     return rt.getPageNumber(pageUrls.pop())
 
+#creates a list of urls to parse through based on the max page-number we find in the menu
 def createUrlList(baseurl_with_query, limit_page_num):
     i = 1
     offset_text = "&offset="
+    sort_text = "&sort=2"       #sort by seeders
     urls = []
     while i < limit_page_num+1:
-        url = baseurl_with_query + offset_text + str(i)
+        url = baseurl_with_query + offset_text + str(i) + sort_text
         urls.append(url)
         i+=1
     return urls

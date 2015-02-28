@@ -2,11 +2,23 @@ __author__ = 'NegatioN'
 
 import re
 
+#TODO possible to save info about subgroup, to display which is prominent in the torrent-collection
+
+
 #finds the name of a series based on the naming-convention [Subgroup] name - episode
 def findSeriesName(torrent_name):
-    string_array = re.split('(]|-)',torrent_name)
-    if len(string_array) > 2:
-        return string_array[2].strip().lower()  #for now index 2 should be the title. strip to remove trailing whitespace
+    string_array = re.split(r'[\[.*\]]', torrent_name, re.IGNORECASE)   #ignore start of torrent (sub-group)
+    try:
+        string_array = re.split('(]|-)',string_array[2])
+    except:
+        string_array = re.split('(]|-)',torrent_name)   #Exceptions occur if no [SubGroup] in the start of torrent-name
+        print("Exception occured before next")
+
+    string_array[0] = string_array[0].replace("_", " ")  .strip()             #replace underscores with space in a series_name
+
+    print(string_array[0]  + "____" + torrent_name)
+    if len(string_array) > 1:
+        return string_array[0]  #for now index 2 should be the title. strip to remove trailing whitespace
     else:
         return torrent_name.lower()
 

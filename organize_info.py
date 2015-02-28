@@ -7,6 +7,9 @@ import re
 #TODO let user choose resolution to download.
 #TODO if series has a file with "All episodes", keep only this? or archive separately
 #TODO implement console-input
+#TODO implement stop parsing when we find a torrent with 0 seeders. we're searching through list sorted by seeders
+#TODO append OVA's somewhere? to the series?
+
 
 #sorts all tuples into lists for their respective series, within a dictionary
 #takes in a tuple with download_url, torrent_name, torrent_size

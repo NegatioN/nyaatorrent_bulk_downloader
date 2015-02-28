@@ -2,6 +2,9 @@ __author__ = 'NegatioN'
 
 import re
 
+#TODO implement is_movie field, regex torrent for movie etc.
+#TODO let be is_series if "Season x" regex match?
+
 #this class represents a torrent, and contains all the information we want to track about it.
 #constructor currently takes in a tr_soup from beautifulsoup4
 class Torrent:
