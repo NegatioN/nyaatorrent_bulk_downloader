@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import organize_info as oi
 import regex_treatment as rt
+import series as ser
 
 #TODO always get trusted torrents first, where no duplicates. Blue rows. class="aplus tlistrow"
 #TODO check series-name with regards to whitespace/underscores
@@ -26,14 +27,11 @@ def printAllPages(soup_list):
 #outputs the dictionary of series to a string with info about each series
 def outputInformation(series_dictionary):
     i = 0
-    for key, series_torrents in series_dictionary.items():
+    for key, series in series_dictionary.items():
+        series_torrents = series.getTorrents()
         if len(series_torrents) > 5:                  #says that only lists with more than 5 objects should be output
             i += 1
-            totalSize = 0
-            for torrent in series_torrents:
-                totalSize += torrent.getSize()
-            totalSize = totalSize/1024/1024   #outbout gb
-            sizeString = "{0:.2f}".format(totalSize)            #format with two decimals
+            sizeString = "{0:.2f}".format(series.getSize())            #format with two decimals
             print("No. " + str(i) + " - " + key + " - " + str(len(series_torrents)) + " episodes - " + sizeString + " GiB")
 
 

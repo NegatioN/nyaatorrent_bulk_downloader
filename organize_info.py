@@ -3,6 +3,7 @@ __author__ = 'NegatioN'
 import regex_treatment as rt
 import torrent as tor
 import re
+import series as ser
 #TODO remove duplicate episeodes.
 #TODO let user choose resolution to download.
 #TODO if series has a file with "All episodes", keep only this? or archive separately
@@ -22,14 +23,9 @@ def organizeTorrentsToSeries(torrents):
             if rt.isCorrectResolution(torrent.getName(), 720):  #only keep torrents containing the given resolution. 720p 360p etc.
                 if torrent.getIsAplus():
                     series_name = series_name + " A+ content"
-                    if series_name not in series_dictionary:
-                        series_dictionary[series_name] = []
-                    series_dictionary[series_name].append(torrent)
-                else:
-                    if series_name not in series_dictionary:
-                        series_dictionary[series_name] = [] #create new list for given series in dictionary
-                    if not rt.episodeAlreadyAdded(series_dictionary[series_name], torrent.getEpisode()):
-                        series_dictionary[series_name].append(torrent)  #add torrent-object to the dictionary list for it's series
+                if series_name not in series_dictionary:
+                    series_dictionary[series_name] = ser.Series(series_name) #create a new series-object
+                series_dictionary[series_name].addTorrent(torrent)
 
     return series_dictionary
         #Standard naming convention seems to be [subgroup] seriesname     episode etc
