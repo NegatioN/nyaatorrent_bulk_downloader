@@ -30,19 +30,19 @@ def outputInformation(series_dictionary):
     for key, series in series_dictionary.items():
         series_torrents = series.getTorrents()
 
-        if len(series_torrents) > 5:                  #says that only lists with more than 5 objects should be output
+        #only output series with more than 5 torrents, or complete series_torrents
+        if len(series_torrents) > 5 or series_torrents[0].getIsSeries():
             i += 1
             sizeString = "{0:.2f}".format(series.getSize())            #format with two decimals
-            print("No. " + str(i) + " - " + key + " - " + str(len(series_torrents)) + " episodes - " + sizeString + " GiB")
+            average_seeders = "{0:.2f}".format(series.getAverageSeeders())
+            print("No. " + str(i) + " - " + key + " - " + str(len(series_torrents)) + " torrents - " + average_seeders + " average seeders - " + sizeString + " GiB")
 
 
 
 
 #creates a list of soup with all the pages with a torrent in them
 def getAllSoup(url, query):
-    #TODO query both these base-urls
-    #replace space with + in the url for search
-    query = query.replace(" ", "+")
+    query = query.replace(" ", "+") #replace space with + in the url for search
     url_with_query = url + query
 
     url_list = [url]

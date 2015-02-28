@@ -4,6 +4,7 @@ import re
 
 
 #TODO possible to save info about subgroup, to display which is prominent in the torrent-collection
+#TODO if searching "naruto". a lot of seriesnames = "naruto shippudden .avi". fix?
 
 
 #finds the name of a series based on the naming-convention [Subgroup] name - episode
@@ -21,7 +22,7 @@ def findSeriesName(torrent):
 
     #print(string_array[0]  + "____" + torrent_name)
     if len(string_array) > 1:
-        return string_array[0]  #for now index 0
+        return string_array[0].lower()  #for now index 0
     else:
         return removeEpisodeNumber(string_array[0], torrent.getEpisode())
 
@@ -46,6 +47,6 @@ def getPageNumber(anchor):
 #removes episode-number from tricky torrents
 def removeEpisodeNumber(series_name_and_episode, episode):
     series_name_and_episode = series_name_and_episode.replace(str(episode), "")
-    return series_name_and_episode.strip()
+    return series_name_and_episode.strip().lower()
 
 #TODO create regex that checks if query actually exists in torrents series-name, not sub-group

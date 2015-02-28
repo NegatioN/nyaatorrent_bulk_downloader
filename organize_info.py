@@ -21,6 +21,8 @@ def organizeTorrentsToSeries(torrents):
         if torrent.getSeeders() > 0:                            #disregards the torrent if it has 0 seeders
             series_name = rt.findSeriesName(torrent) #get name of series from torrent
             if rt.isCorrectResolution(torrent.getName(), 720):  #only keep torrents containing the given resolution. 720p 360p etc.
+                if torrent.getIsSeries():
+                    series_name = torrent.getName()
                 if torrent.getIsAplus():
                     series_name = series_name + " A+ content"
                 if series_name not in series_dictionary:
