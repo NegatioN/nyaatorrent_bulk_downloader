@@ -26,16 +26,20 @@ def printAllPages(soup_list):
 
 #outputs the dictionary of series to a string with info about each series
 def outputInformation(series_dictionary):
-    i = 0
+    sorted_series = []
     for key, series in series_dictionary.items():
         series_torrents = series.getTorrents()
 
         #only output series with more than 5 torrents, or complete series_torrents
         if len(series_torrents) > 5 or series_torrents[0].getIsSeries():
-            i += 1
-            sizeString = "{0:.2f}".format(series.getSize())            #format with two decimals
-            average_seeders = "{0:.2f}".format(series.getAverageSeeders())
-            print("No. " + str(i) + " - " + key + " - " + str(len(series_torrents)) + " torrents - " + average_seeders + " average seeders - " + sizeString + " GiB")
+            sorted_series.append(series)
+
+    i = 0
+    for series in sorted_series:
+        i += 1
+        sizeString = "{0:.2f}".format(series.getSize())            #format with two decimals
+        average_seeders = "{0:.2f}".format(series.getAverageSeeders())
+        print("No. " + str(i) + " - " + series.getName() + " - " + str(len(series.getTorrents())) + " torrents - " + average_seeders + " average seeders - " + sizeString + " GiB")
 
 
 
