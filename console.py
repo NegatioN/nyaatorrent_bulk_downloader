@@ -2,6 +2,7 @@ __author__ = 'NegatioN'
 
 import print_factory
 import parse_site
+import downloader
 
 def run():
     baseurl = "http://www.nyaa.se/?page=search&cats=1_37&filter=0&term="
@@ -16,6 +17,12 @@ def run():
 
     print_factory.printSeries(sorted_series_list)
 
+    selected_series = print_factory.chooseTorrent(sorted_series_list)
+
+    #if user didnt select back to menu
+    if selected_series != None:
+        downloader.download_series(sorted_series_list[selected_series])
 
 
-    #run() #loop untill broken
+
+    run() #loop untill escaped by user-input

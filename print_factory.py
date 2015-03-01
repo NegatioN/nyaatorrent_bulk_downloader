@@ -6,25 +6,34 @@ import os
 from colorama import init
 from termcolor import colored, cprint
 
-class TextFormat:
-    BOLD = '\033[1m'
-    NORMAL = '\033[0m'
-    BOLD_GREEN = '\033[1m\033[32m'
-    GREEN = '\033[0m\033[32m'
-    RED = '\033[0m\033[31m'
-    BOLD_RED = '\033[1m\033[31m'
-
-
 def start():
     helper()
-    return select_torrent()
+    return input_query()
 
 def helper():
     print("\nSearch torrents from Nyaa.se")
 
-def select_torrent():
+def input_query():
+    query = input('>>')
+    return query
+
+def select_torrent(max_index):
     torrent = input('>> ')
-    return torrent
+    try:
+        index = int(torrent)
+        if index > 0 and index < max_index+1:
+            return index-1  #returns proper index in array compared to display
+        else:
+            print('The number you wrote is not present in the list...')
+            select_torrent(max_index)
+    except:
+        if torrent == 'Q' or torrent == 'q':
+            return torrent
+        elif torrent == 'M' or torrent == 'm':
+            return torrent
+        else:
+            print('Please input a number...')
+            select_torrent(max_index)
 
 
 def select_resolution():
@@ -62,27 +71,17 @@ def printSeries(sorted_series):
     output = tabulate.tabulate(tabluate_list, headers=[number,title, seeders, torrents, size])
     print(output)
 
-
-def finalize(titleSizeLink):
-        # torrent selection
-    print('\nSelect series: [ 1 - ' + str(len(titleSizeLink)) + ' ] or [ M ] to go back to main menu or [ Q ] to quit')
-    torrent = select_torrent()
+def chooseTorrent(sorted_series):
+    print('\nSelect series: [ 1 - ' + str(len(sorted_series)) + ' ] or [ M ] to go back to main menu or [ Q ] to quit')
+    torrent = select_torrent(len(sorted_series))
     if torrent == 'Q' or torrent == 'q':
         sys.exit(0)
     elif torrent == 'M' or torrent == 'm':
         return
     else:
-        if int(torrent) <= 0 or int(torrent) > len(titleSizeLink):
-            print('The number you wrote is not present in the list...')
-        else:
-            tri = titleSizeLink.__getitem__(int(torrent)-1)
-            path = arrangeTorrents.createFolder(tri[0], "torrents")
-            os.chdir(path)
-            downloadTorrents.download_all_torrents(tri[1])
-#finalize for titles input
-#def finalize():
+        return torrent
 
-#outputs a color and size-formated text-tuple
+#outputs a color and size-formated text-tuple of a series-object
 def createSeriesRow(index, series):
     attributes = [] #empty attributes if normal row
     if index % 2 == 1:
@@ -108,6 +107,7 @@ def evaluateHealth(number):
     else:
         return 'red'
 
+#evaluates color of series-name. blue if aplus-content
 def evaluateNameColor(series):
     if series.getIsAplus():
         return 'blue'
