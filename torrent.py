@@ -8,13 +8,6 @@ import re
 #this class represents a torrent, and contains all the information we want to track about it.
 #constructor currently takes in a tr_soup from beautifulsoup4
 class Torrent:
-    is_series = False
-    is_aplus = False    #manually verified torrents by nyaa.se that is optimal quality.
-    episode_number = 0
-    url = ""
-    name = ""
-    size = 0
-    seeders = 0
 
     #takes in a tr_soup from nyaa.se
     def __init__(self, tr_soup):
@@ -29,6 +22,8 @@ class Torrent:
         self.is_series = isTorrentSeries(self.name)
         if not self.is_series:                  #doesnt make sense to set episode number if it's a complete series.
             self.episode_number = findEpisodeNumber(self.name)
+        else:
+            self.episode_number = 0
 
         self.is_aplus = findAPlus(tr_soup)
 
@@ -75,7 +70,8 @@ def getTorrentSize(size_string):
 
 def isTorrentSeries(torrent_name):
     series_regex = re.compile('((\d+)-(\d+))')    #a series torrent is usually specified by ep 1-400 for example
-    if re.search(series_regex, torrent_name) is not None:
+    complete_regex = re.compile(r'(complete)|(season)')
+    if re.search(series_regex, torrent_name) is not None or re.search(complete_regex, torrent_name.lower()):
         return True
     else:
         return False

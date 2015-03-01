@@ -51,9 +51,3 @@ def episodeAlreadyAdded(torrent_list, episode_number):
         if episode_number == torrent.getEpisode():
             return True
     return False
-
-
-#Test-method toString()
-def printEpisodes(torrent_list):
-    for torrent in torrent_list:
-        print(torrent.getName())
