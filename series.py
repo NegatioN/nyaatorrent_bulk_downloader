@@ -22,6 +22,8 @@ class Series:
         return self.name
     def getTorrents(self):
         return self.torrent_list
+    def getNumberOfTorrents(self):
+        return len(self.torrent_list)
     #outputs the size of a series in float, number of GB's
     def getSize(self):
         return self.size/1024/1024   #outbout gb
@@ -30,7 +32,7 @@ class Series:
     def getAverageSeeders(self):
         return (self.seeders/len(self.torrent_list))
     def getSizeString(self):
-        return u'{0:.2f}'.format(self.getSize())            #must output unicode-compatible strings for prettytable
+        return u'{0:.2f}'.format(self.getSize())  + " GB"           #must output unicode-compatible strings for prettytable
     def getAvgSeederString(self):
         return u'{0:.2f}'.format(self.getAverageSeeders())  #must output unicode-compatible strings for prettytable
     def toString(self):

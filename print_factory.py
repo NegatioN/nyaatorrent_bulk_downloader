@@ -3,13 +3,6 @@ __author__ = 'NegatioN'
 import tabulate
 import sys
 import os
-from prettytable import PrettyTable
-
-class OutColors:
-    DEFAULT = '\033[0m'
-    BW = '\033[1m'
-    LG = '\033[0m\033[32m'
-    LR = '\033[0m\033[31m'
 
 def start():
     helper()
@@ -27,7 +20,6 @@ def select_resolution():
     arr = [480, 720, 1080]
     print("Write 1 for 480p, 2 for 720p or 3 for 1080p")
     userin = input("Please select resolution: \n>>")
-    print(userin)
     ##verify that input is integer
     try:
         index = int(userin)
@@ -41,26 +33,22 @@ def select_resolution():
         print("Write a number from 1-3")
         select_resolution()
 
+
 #TODO apply colors in table
 def printSeries(sorted_series):
+    tabluate_list = []
     ##define headers of table
     number = "No."
     title = "Title"
     seeders = "Avg. Seeders"
+    torrents = "Torrent-files"
     size = "Total Size"
-    #define prettyTable
-    pretty_table = PrettyTable([number, title, seeders, size])
-    pretty_table.padding_width = 1
-    #left-align content
-    pretty_table.align[title] = "l"
-    pretty_table.align[seeders] = "l"
-    pretty_table.align[size] = "l"
 
-    #input content to table
     for index, series in enumerate(sorted_series):
-        row = str(index+1), series.getName(), series.getAvgSeederString(), series.getSizeString()
-        pretty_table.add_row(row)
-    print(pretty_table)
+        row = (str(index+1), series.getName(), series.getAvgSeederString(), str(series.getNumberOfTorrents()), series.getSizeString())
+        tabluate_list.append(row)
+    output = tabulate.tabulate(tabluate_list, headers=[number,title, seeders, torrents, size])
+    print(output)
 
 
 def finalize(titleSizeLink):
