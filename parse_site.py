@@ -12,22 +12,16 @@ import series as ser
 
 def parse_query(url, query, resolution):
     soup_list = getAllSoup(url, query)
-    return findAllSeries(soup_list)
+    return findAllSeries(soup_list, resolution)
 
 
 #test method
-def test(url, query):
-    soup_list = getAllSoup(url, query)
-    sorted_series = findAllSeries(soup_list)
-    outputInformation(sorted_series)
-
-#test method
-def findAllSeries(soup_list):
+def findAllSeries(soup_list, resolution):
     torrents = []
     while soup_list:
         oi.createTorrentList(soup_list.pop(), torrents)
 
-    series_dictionary = oi.organizeTorrentsToSeries(torrents)
+    series_dictionary = oi.organizeTorrentsToSeries(torrents, resolution)
     sorted_series = oi.outputSeries(series_dictionary)
     return sorted_series
 
@@ -46,7 +40,7 @@ def getAllSoup(url, query):
     content = getContents(url_with_query) #init first search result.
     soup = BeautifulSoup(content.content)
     url_list = getPagesWithTorrents(soup, url_with_query)
-    print(url_list)
+    #print(url_list)
 
 
     #adds soup as long as we have pages to take from

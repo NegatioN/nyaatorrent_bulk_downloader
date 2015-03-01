@@ -12,13 +12,13 @@ import series as ser
 
 #sorts all tuples into lists for their respective series, within a dictionary
 #takes in a tuple with download_url, torrent_name, torrent_size
-def organizeTorrentsToSeries(torrents):
+def organizeTorrentsToSeries(torrents, resolution):
     series_dictionary = {} #dict holding all series -> torrents within series
 
     for torrent in torrents:
         if torrent.getSeeders() > 0:                 #disregards the torrent if it has 0 seeders
             series_name = rt.findSeriesName(torrent) #get name of series from torrent
-            if rt.isCorrectResolution(torrent.getName(), 720):  #only keep torrents containing the given resolution. 720p 360p etc.
+            if rt.isCorrectResolution(torrent.getName(), resolution):  #only keep torrents containing the given resolution. 720p 360p etc.
                 if torrent.getIsSeries():
                     series_name = torrent.getName()
                 if torrent.getIsAplus():

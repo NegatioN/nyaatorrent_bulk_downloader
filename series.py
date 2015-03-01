@@ -29,11 +29,12 @@ class Series:
     #returns the average seeder number. Total_seeders/list.length
     def getAverageSeeders(self):
         return (self.seeders/len(self.torrent_list))
-
+    def getSizeString(self):
+        return u'{0:.2f}'.format(self.getSize())            #must output unicode-compatible strings for prettytable
+    def getAvgSeederString(self):
+        return u'{0:.2f}'.format(self.getAverageSeeders())  #must output unicode-compatible strings for prettytable
     def toString(self):
-        sizeString = "{0:.2f}".format(self.getSize())            #format with two decimals
-        average_seeders = "{0:.2f}".format(self.getAverageSeeders())
-        return self.name + " - " + str(len(self.torrent_list)) + " torrents - " + average_seeders + " average seeders - " + sizeString + " GiB"
+        return self.name + " - " + str(len(self.torrent_list)) + " torrents - " + self.getAvgSeederString() + " average seeders - " + self.getSizeString() + " GiB"
 
 
 #takes in a single series, and episode-number
