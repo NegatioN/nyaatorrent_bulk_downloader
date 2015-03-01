@@ -3,21 +3,31 @@
 __author__ = 'NegatioN'
 
 
+import print_factory
 import parse_site
-import console
-#TODO implement user choose resolution
+import downloader
 
-#baseurl = "http://www.nyaa.se/?page=search&cats=1_37&filter=0&term="
+def run():
+    baseurl = "http://www.nyaa.se/?page=search&cats=1_37&filter=0&term="
 
-console.run()
+    input = print_factory.start()
+    resolution = print_factory.select_resolution()
+    print("searching...")
 
-#input = "gintama"
-#parse_site.test(baseurl, input)
 
-#url = baseurl + input
 
-## Start program
- ##   try:
- ##       console.run()
-  ##  except KeyboardInterrupt:
- ##       print('\nHuha!')
+    sorted_series_list = parse_site.parse_query(baseurl, input, resolution)
+
+    print_factory.printSeries(sorted_series_list)
+
+    selected_series = print_factory.chooseTorrent(sorted_series_list)
+
+    #if user didnt select back to menu
+    if selected_series != None:
+        downloader.download_series(sorted_series_list[selected_series])
+
+
+
+    run() #loop untill escaped by user-input
+
+run()
