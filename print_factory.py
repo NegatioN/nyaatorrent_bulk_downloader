@@ -56,7 +56,7 @@ def select_resolution():
 
 #TODO apply colors and boldness in table
 def printSeries(sorted_series):
-    #init()              #init colors for win32
+    init()              #init colors for win32
     tabluate_list = []
     ##define headers of table
     number = "No."
