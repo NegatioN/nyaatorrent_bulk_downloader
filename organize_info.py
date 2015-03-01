@@ -4,8 +4,6 @@ import regex_treatment as rt
 import torrent as tor
 import re
 import series as ser
-#TODO let user choose resolution to download.
-#TODO implement console-input
 #TODO implement stop parsing when we find a torrent with 0 seeders. we're searching through list sorted by seeders
 #TODO append OVA's somewhere? to the series?
 

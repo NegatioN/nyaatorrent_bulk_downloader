@@ -6,8 +6,11 @@ __author__ = 'NegatioN'
 import print_factory
 import parse_site
 import downloader
+import os
 
 def run():
+    os.system("mode con: cols=135 lines=50") #forces console-size to be at least 135 columns.
+
     baseurl = "http://www.nyaa.se/?page=search&cats=1_37&filter=0&term="
 
     input = print_factory.start()
