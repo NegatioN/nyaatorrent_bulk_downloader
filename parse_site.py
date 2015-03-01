@@ -75,8 +75,10 @@ def extractLastPageNumber(soup):
     pageUrls = []
     for a in rightpages[0].findAll('a'):
         pageUrls.append(a['href'])
-
-    return rt.getPageNumber(pageUrls.pop())
+    if len(pageUrls) > 0:
+        return rt.getPageNumber(pageUrls.pop())
+    else:
+        return 1
 
 #creates a list of urls to parse through based on the max page-number we find in the menu
 def createUrlList(baseurl_with_query, limit_page_num):
