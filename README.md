@@ -1,5 +1,13 @@
 # nyaatorrent_bulk_downloader
+==================
 A program to download entire series of torrents with one click from nyaa.se
+
+Here are some examples of output:
+
+![Example 1](https://raw.githubusercontent.com/NegatioN/ProgrammeringOblig/master/screenshots/example1.PNG)
+![Example 2](https://raw.githubusercontent.com/NegatioN/ProgrammeringOblig/master/screenshots/example2.PNG)
+
+
 
 My objective with this program is to let the user be able to select from all series matching console-input and download all torrents(preferrably just one of each episode) for this given series.
 Also the user should be able to select a resolution for the torrent to download.
