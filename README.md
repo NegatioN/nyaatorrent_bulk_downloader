@@ -4,8 +4,8 @@ A program to download entire series of torrents with one click from nyaa.se
 
 Here are some examples of output:
 
-![Example 1](https://raw.githubusercontent.com/NegatioN/ProgrammeringOblig/master/screenshots/example1.PNG)
-![Example 2](https://raw.githubusercontent.com/NegatioN/ProgrammeringOblig/master/screenshots/example2.PNG)
+![Example 1](https://raw.githubusercontent.com/NegatioN/nyaatorrent_bulk_downloader/master/screenshots/example1.PNG)
+![Example 2](https://raw.githubusercontent.com/NegatioN/nyaatorrent_bulk_downloader/master/screenshots/example2.PNG)
 
 
 
