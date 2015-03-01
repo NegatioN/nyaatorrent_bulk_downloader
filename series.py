@@ -7,6 +7,7 @@ class Series:
         self.torrent_list = []
         self.seeders = 0
         self.size = 0
+        self.is_aplus = False
 
     #Adds a torrent to the torrent_list if it's missing
     def addTorrent(self, torrent):
@@ -20,6 +21,8 @@ class Series:
     ### GETTERS AND SETTERS ####
     def getName(self):
         return self.name
+    def getIsAplus(self):
+        return self.is_aplus
     def getTorrents(self):
         return self.torrent_list
     def getNumberOfTorrents(self):
@@ -27,6 +30,8 @@ class Series:
     #outputs the size of a series in float, number of GB's
     def getSize(self):
         return self.size/1024/1024   #outbout gb
+    def setIsAplus(self):
+        self.is_aplus = True
 
     #returns the average seeder number. Total_seeders/list.length
     def getAverageSeeders(self):
@@ -34,7 +39,7 @@ class Series:
     def getSizeString(self):
         return u'{0:.2f}'.format(self.getSize())  + " GB"           #must output unicode-compatible strings for prettytable
     def getAvgSeederString(self):
-        return u'{0:.2f}'.format(self.getAverageSeeders())  #must output unicode-compatible strings for prettytable
+        return u'{0:.2f}'.format(self.getAverageSeeders())  #must output 0 decimals for tabulate
     def toString(self):
         return self.name + " - " + str(len(self.torrent_list)) + " torrents - " + self.getAvgSeederString() + " average seeders - " + self.getSizeString() + " GiB"
 
