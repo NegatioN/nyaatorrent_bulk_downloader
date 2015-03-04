@@ -7,6 +7,15 @@ Here are some examples of output:
 ![Example 1](https://raw.githubusercontent.com/NegatioN/nyaatorrent_bulk_downloader/master/screenshots/example1.PNG)
 ![Example 2](https://raw.githubusercontent.com/NegatioN/nyaatorrent_bulk_downloader/master/screenshots/example2.PNG)
 
+## Download
+Go to the ["Release tab"](https://github.com/NegatioN/nyaatorrent_bulk_downloader/releases ) for downloads
+
+
+## Install
+Use ```pip install``` to install the dependencies
+pip install beautifulsoup4 requests colorama tabulate termcolor
+
+
 
 
 My objective with this program is to let the user be able to select from all series matching console-input and download all torrents(preferrably just one of each episode) for this given series.
