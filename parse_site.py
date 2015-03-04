@@ -4,7 +4,6 @@ import requests
 from bs4 import BeautifulSoup
 import organize_info as oi
 import regex_treatment as rt
-import series as ser
 
 #TODO always get trusted torrents first, where no duplicates. Blue rows. class="aplus tlistrow"
 #TODO check series-name with regards to whitespace/underscores
@@ -15,7 +14,7 @@ def parse_query(url, query, resolution):
     return findAllSeries(soup_list, resolution)
 
 
-#test method
+#Finds a list of series, sorted by number of average seeders.
 def findAllSeries(soup_list, resolution):
     torrents = []
     while soup_list:
@@ -24,9 +23,6 @@ def findAllSeries(soup_list, resolution):
     series_dictionary = oi.organizeTorrentsToSeries(torrents, resolution)
     sorted_series = oi.outputSeries(series_dictionary)
     return sorted_series
-
-
-
 
 
 #creates a list of soup with all the pages with a torrent in them

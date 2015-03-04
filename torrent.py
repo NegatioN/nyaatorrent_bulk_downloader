@@ -94,5 +94,5 @@ def findAPlus(tr_soup):
     try:
         return tr_soup['class'][0] == 'aplus'   #checks for the aplus tlistrow class-tag on nyaa.se
     except:
-        False
+        return False
 

@@ -3,7 +3,7 @@ __author__ = 'NegatioN'
 import tabulate
 import sys
 from colorama import init
-from termcolor import colored, cprint
+from termcolor import colored
 
 def start():
     helper()
@@ -53,7 +53,6 @@ def select_resolution():
         select_resolution()
 
 
-#TODO apply colors and boldness in table
 def printSeries(sorted_series):
     if sys.platform == 'win32':
         init()              #init colors for win32
