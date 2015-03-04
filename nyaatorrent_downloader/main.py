@@ -11,6 +11,9 @@ def run():
     os.system("mode con: cols=135 lines=50") #forces console-size to be at least 135 columns.
 
     baseurl = "http://www.nyaa.se/?page=search&cats=1_37&filter=0&term="
+    #TODO create simple configs for recognizing favorite sub-group, and downloading that
+    # if seeders are over a threshold.
+    #TODO optional "perma-config" for resolution-option. option for searching all resolutions?
 
     input = print_factory.start()
     resolution = print_factory.select_resolution()
