@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from nyaatorrent_downloader import organize_info as oi
-import regex_treatment as rt
+from nyaatorrent_downloader import regex_treatment as rt
 
 
 

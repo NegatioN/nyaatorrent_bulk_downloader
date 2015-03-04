@@ -2,8 +2,8 @@ __author__ = 'NegatioN'
 
 import re
 
-import regex_treatment as rt
-import torrent as tor
+from nyaatorrent_downloader import regex_treatment as rt
+from nyaatorrent_downloader import torrent as tor
 from nyaatorrent_downloader import series as ser
 
 #TODO implement stop parsing when we find a torrent with 0 seeders. we're searching through list sorted by seeders
