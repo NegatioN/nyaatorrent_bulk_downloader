@@ -1,0 +1,7 @@
+# Build-folder for cx_freeze
+build/
+
+
+# pyCharm
+.idea/
+mydjangosite/.idea/

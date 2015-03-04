@@ -2,7 +2,8 @@ from unittest import TestCase
 
 __author__ = 'NegatioN'
 
-import parse_site
+from nyaatorrent_downloader import parse_site
+
 
 class TestOrganizeTorrentsToSeries(TestCase):
 

@@ -2,8 +2,8 @@ from unittest import TestCase
 
 __author__ = 'NegatioN'
 
-import regex_treatment as rt
-import torrent as tor
+from nyaatorrent_downloader import regex_treatment as rt
+import nyaatorrent_downloader.torrent as tor
 
 class TestFindSeriesName(TestCase):
     def setUp(self):

@@ -2,11 +2,10 @@
 
 __author__ = 'NegatioN'
 
-
-import print_factory
-import parse_site
-import downloader
 import os
+
+from nyaatorrent_downloader import print_factory, parse_site, downloader
+
 
 def run():
     os.system("mode con: cols=135 lines=50") #forces console-size to be at least 135 columns.

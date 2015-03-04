@@ -2,7 +2,9 @@ from unittest import TestCase
 
 __author__ = 'NegatioN'
 
-import parse_site
+from nyaatorrent_downloader import parse_site
+
+
 class TestGetPageNumber(TestCase):
     def setUp(self):
         self.case1 = "http://www.nyaa.se/?cats=1_38&offset=100"

@@ -1,9 +1,11 @@
 __author__ = 'NegatioN'
 
+import re
+
 import regex_treatment as rt
 import torrent as tor
-import re
-import series as ser
+from nyaatorrent_downloader import series as ser
+
 #TODO implement stop parsing when we find a torrent with 0 seeders. we're searching through list sorted by seeders
 #TODO append OVA's somewhere? to the series?
 

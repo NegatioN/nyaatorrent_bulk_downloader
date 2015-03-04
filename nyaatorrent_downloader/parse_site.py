@@ -2,8 +2,12 @@ __author__ = 'NegatioN'
 
 import requests
 from bs4 import BeautifulSoup
-import organize_info as oi
+
+from nyaatorrent_downloader import organize_info as oi
 import regex_treatment as rt
+
+
+
 
 #TODO always get trusted torrents first, where no duplicates. Blue rows. class="aplus tlistrow"
 #TODO check series-name with regards to whitespace/underscores

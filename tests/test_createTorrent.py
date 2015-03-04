@@ -2,8 +2,7 @@ from unittest import TestCase
 
 __author__ = 'NegatioN'
 
-import torrent as tor
-import parse_site
+from nyaatorrent_downloader import torrent as tor, parse_site
 import re
 
 #TODO find a good way to test this in a real environment.
