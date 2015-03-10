@@ -4,6 +4,7 @@ import tabulate
 import sys
 from colorama import init
 from termcolor import colored
+from nyaatorrent_downloader import config
 
 def start():
     helper()
@@ -18,6 +19,7 @@ def input_query():
 
 def select_torrent(max_index):
     torrent = input('>> ')
+    torrent = torrent.lower()   #simplify input-checks.
     try:
         index = int(torrent)
         if index > 0 and index < max_index+1:
@@ -26,10 +28,19 @@ def select_torrent(max_index):
             print('The number you wrote is not present in the list...')
             select_torrent(max_index)
     except:
-        if torrent == 'Q' or torrent == 'q':
+        if torrent == 'q':
             return torrent
-        elif torrent == 'M' or torrent == 'm':
+        elif torrent == 'm':
             return torrent
+        elif torrent == 'c':
+            print("\n[ V ]iew settings, or [ C ]onfigure settings?")
+            view_or_set = input()
+            if view_or_set.lower() == 'v':
+                viewConfigs()
+                return
+            else:
+                setConfigs()
+                return
         else:
             print('Please input a number...')
             select_torrent(max_index)
@@ -71,14 +82,36 @@ def printSeries(sorted_series):
     print(output)
 
 def chooseTorrent(sorted_series):
-    print('\nSelect series: [ 1 - ' + str(len(sorted_series)) + ' ] or [ M ] to go back to main menu or [ Q ] to quit')
+    print('\nSelect series: [ 1 - ' + str(len(sorted_series)) + ' ] or [ S ] to search again, [ C ] to access configs or [ Q ] to quit')
     torrent = select_torrent(len(sorted_series))
-    if torrent == 'Q' or torrent == 'q':
+
+    if torrent == 'q':
         sys.exit(0)
-    elif torrent == 'M' or torrent == 'm':
+    elif torrent == 's':
+        return
+    elif torrent == 'c':
         return
     else:
         return torrent
+
+
+def setConfigs():
+    resolution = select_resolution()
+    favorite = input("\nFavorite sub-group?")
+    threshold = input("\nThreshold?")
+    prompt = input("\nDo you want to be propmpted every time for settings?")
+    configs = config.Configuration(resolution, favorite,threshold,prompt)
+
+    configs.save()
+
+
+def viewConfigs():
+    configs = config.readFromFile()
+    if configs != None:
+        print("TEST")
+        print(configs.output())
+
+
 
 #outputs a color and size-formated text-tuple of a series-object
 def createSeriesRow(index, series):

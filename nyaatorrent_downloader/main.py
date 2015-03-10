@@ -4,7 +4,7 @@ __author__ = 'NegatioN'
 
 import os
 
-from nyaatorrent_downloader import print_factory, parse_site, downloader
+from nyaatorrent_downloader import print_factory, parse_site, downloader, config
 
 
 def run():
@@ -15,8 +15,17 @@ def run():
     # if seeders are over a threshold.
     #TODO optional "perma-config" for resolution-option. option for searching all resolutions?
 
+
     input = print_factory.start()
-    resolution = print_factory.select_resolution()
+
+    configs = config.readFromFile()
+    #we have configs and want to load these.
+    if configs != None:
+        if configs.prompt == True:  #user wants to be prompted every time.
+            resolution = configs.resolution
+    #we have no config-file and have to manually select options
+    else:
+        resolution = print_factory.select_resolution()
     print("searching...")
 
 
