@@ -34,6 +34,11 @@ class Configuration:
         #promt user for config every time program starts?
         return cls(dictionary)
 
+    def insertProfile(self, profileDict, profileName):
+        self.config_dict[profileName] = profileDict
+        self.profile = profileName
+        self.save()
+
     def getPrompt(self):
         return self.config_dict.getboolean(self.profile, 'prompt_on_query')
     def getResolution(self):
@@ -49,23 +54,25 @@ class Configuration:
         return profile_list
     def setProfile(self, profile):
         self.profile = profile
+    def getCurrentProfile(self):
+        return self.profile
 
     #outputs a list-item for each option with [name - value]
-    def output(self):
+    def output(self, profileName):
         output = []
-        tuples = self.getEditConfigs()
+        tuples = self.getEditConfigs(profileName)
         for tuple in tuples:
             output.append(tuple[0] + " : " + str(tuple[1]))
         return output
 
     #returns tuples to be used to create a new configuration-object and save it
-    def getEditConfigs(self):
+    def getEditConfigs(self, profileName):
         config_tuples = []
-        for user in self.config_dict:       #gets each section in .ini
-            for key in self.config_dict[user]:  #finds list of ini-keys
-                config_tuple = key, self.config_dict[user][key]
-                config_tuples.append(config_tuple)
-            return config_tuples
+
+        for key in self.config_dict[profileName]:  #finds list of ini-keys
+            config_tuple = key, self.config_dict[profileName][key]
+            config_tuples.append(config_tuple)
+        return config_tuples
 
 
     #writes the output of a config to a new file with the name configs.

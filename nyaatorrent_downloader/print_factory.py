@@ -17,7 +17,7 @@ def input_query():
     query = input('>>')
     return query
 
-def select_torrent(max_index):
+def select_torrent(max_index, configs):
     torrent = input('>> ')
     torrent = torrent.lower()   #simplify input-checks.
     try:
@@ -33,13 +33,16 @@ def select_torrent(max_index):
         elif torrent == 'm':
             return torrent
         elif torrent == 'c':
-            print("\n[ V ] to view settings, or [ C ] to configure settings\n>>")
+            print("\n[ V ] to view settings, [ M ] to make a new profile, or [ C ] to configure settings\n>>")
             view_or_set = input()
             if view_or_set.lower() == 'v':
-                viewConfigs()
+                viewConfigs(configs)
+                return
+            elif view_or_set.lower() == 'm':
+                createNewConfig()
                 return
             else:
-                setConfigs()
+                setConfigs(configs)
                 return
         else:
             print('Please input a number...')
@@ -64,9 +67,9 @@ def printSeries(sorted_series):
     output = tabulate.tabulate(tabluate_list, headers=[number,title, seeders, torrents, size])
     print(output)
 
-def chooseTorrent(sorted_series):
+def chooseTorrent(sorted_series, configs):
     print('\nSelect series: [ 1 - ' + str(len(sorted_series)) + ' ] or [ S ] to search again, [ C ] to access configs or [ Q ] to quit')
-    torrent = select_torrent(len(sorted_series))
+    torrent = select_torrent(len(sorted_series), configs)
 
     if torrent == 'q':
         sys.exit(0)
@@ -113,11 +116,11 @@ def evaluateNameColor(series):
     else:
         return 'white'
 
-def viewConfigs():
-    print_configs.viewConfigs()
-def setConfigs():
-    print_configs.setConfigs()
+def viewConfigs(configs):
+    print_configs.viewConfigs(configs.getCurrentProfile())
+def setConfigs(configs):
+    print_configs.setConfigs(configs.getCurrentProfile())
 def createNewConfig():
-    print_configs.createNewConfig()
+    return print_configs.createNewConfig()
 def selectProfile(configs):
     return print_configs.selectProfile(configs)

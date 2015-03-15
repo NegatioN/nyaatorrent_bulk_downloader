@@ -45,7 +45,7 @@ def run():
 
     print_factory.printSeries(sorted_series_list)
 
-    selected_series = print_factory.chooseTorrent(sorted_series_list)
+    selected_series = print_factory.chooseTorrent(sorted_series_list, configs)
 
     #if user didnt select back to menu
     if selected_series != None:

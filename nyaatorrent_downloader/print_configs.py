@@ -2,39 +2,41 @@ __author__ = 'NegatioN'
 
 from nyaatorrent_downloader import config
 
-def setConfigs():
+def setConfigs(profileName):
     configuration = config.readFromFile()
+
 
     if configuration == None:
         print("There doesn't seem to be any configs yet.\n")
         return
-    config_tuples = configuration.getEditConfigs()
+    config_tuples = configuration.getEditConfigs(profileName)
 
     newSettings = {}
-    newSettings['DEFAULT'] = {}
-    for configs in config_tuples:
-        currentSetting = configs[0]
+    for setting in config_tuples:
+        currentSetting = setting[0]
         if currentSetting == 'resolution':
             newInput = select_resolution()
         else:
             newInput = input(currentSetting + "\n>>")
 
-        newSettings['DEFAULT'][currentSetting] = newInput
-
-    configs = config.Configuration(newSettings)
-    configs.save()
-    viewConfigs()
+        newSettings[currentSetting] = newInput
+    configuration.config_dict[profileName] = newSettings
+    configuration.save()
+    viewConfigs(profileName)
 
 def createNewConfig():
     wantToCreate = input("Do you want to create new configs?\n>>").lower()
     if wantToCreate == 'yes' or wantToCreate == 'y':
-        makeConfig()
-        viewConfigs()
+        configs = makeConfig()
+        viewConfigs(configs.getCurrentProfile())
+        return configs
+    return None
 
 def makeConfig():
+    configuration = config.readFromFile()
+
     profileName = input("Write a profile-name\n>>")
-    config_dict = {}
-    config_dict[profileName] = {}
+
     resolution = select_resolution()
     favorite_subber = input("What's your favorite sub-group?\n>>")
     try:
@@ -43,14 +45,23 @@ def makeConfig():
         threshold = int(input("How many seeders should the group have for it to appear?\n>>"))
     prompt = input("Do you want to be prompted for resolution before each search?\n>>")
 
-    configs = config.Configuration.fromoptions(profileName,resolution,favorite_subber,threshold, prompt)
-    configs.setProfile(profileName)
-    configs.save()
+    #Does a set of configuration exist from before?
+    if configuration == None:
+        configs = config.Configuration.fromoptions(profileName,resolution,favorite_subber,threshold, prompt)
+        configs.setProfile(profileName)
+        configs.save()
+        return configs
+    else:
+        profileDict = {'resolution' : resolution, 'favorite_subber' : favorite_subber,
+                       'fav_threshold' : threshold, 'prompt_on_query' : prompt}
+        configuration.insertProfile(profileDict, profileName)
+        return configuration
 
-def viewConfigs():
+def viewConfigs(profileName):
     configs = config.readFromFile()
     if configs != None:
-        output = configs.output()
+        print("Settings for: " + profileName)
+        output = configs.output(profileName)
         for setting in output:
             print(setting)
     else:
@@ -81,9 +92,9 @@ def selectProfile(configs):
         num += 1
     try:
         selected_input = input("Select one of the profiles from 1 - " + str(num-1) + "\n>>")
-        selected_profile = int(selected_input) - 1
+        selected_profile = profiles[int(selected_input) - 1]
 
     except:
         selected_input = input("Select one of the profiles from 1 - " + str(num-1) + "\n>>")
-        selected_profile = int(selected_input) - 1
+        selected_profile = profiles[int(selected_input) - 1]
     return selected_profile
