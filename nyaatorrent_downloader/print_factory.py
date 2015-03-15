@@ -117,9 +117,9 @@ def evaluateNameColor(series):
         return 'white'
 
 def viewConfigs(configs):
-    print_configs.viewConfigs(configs.getCurrentProfile())
+    print_configs.viewConfigs(configs)
 def setConfigs(configs):
-    print_configs.setConfigs(configs.getCurrentProfile())
+    print_configs.setConfigs(configs)
 def createNewConfig():
     return print_configs.createNewConfig()
 def selectProfile(configs):

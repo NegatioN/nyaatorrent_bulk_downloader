@@ -2,13 +2,13 @@ __author__ = 'NegatioN'
 
 from nyaatorrent_downloader import config
 
-def setConfigs(profileName):
+def setConfigs(configs):
     configuration = config.readFromFile()
-
 
     if configuration == None:
         print("There doesn't seem to be any configs yet.\n")
         return
+    profileName = configs.getCurrentProfile
     config_tuples = configuration.getEditConfigs(profileName)
 
     newSettings = {}
@@ -28,10 +28,11 @@ def createNewConfig():
     wantToCreate = input("Do you want to create new configs?\n>>").lower()
     if wantToCreate == 'yes' or wantToCreate == 'y':
         configs = makeConfig()
-        viewConfigs(configs.getCurrentProfile())
+        viewConfigs(configs)
         return configs
     return None
 
+#makes a new config-profile.
 def makeConfig():
     configuration = config.readFromFile()
 
@@ -57,9 +58,11 @@ def makeConfig():
         configuration.insertProfile(profileDict, profileName)
         return configuration
 
-def viewConfigs(profileName):
+#Output configs of current user to console
+def viewConfigs(settings):
     configs = config.readFromFile()
     if configs != None:
+        profileName = settings.getCurrentProfile()
         print("Settings for: " + profileName)
         output = configs.output(profileName)
         for setting in output:
@@ -84,17 +87,22 @@ def select_resolution():
         print("Write a number from 1-3")
         select_resolution()
 
+#selects a profile for use throughout the program-cycle
 def selectProfile(configs):
     profiles = configs.getProfiles()
     num = 1
     for profile in profiles:
         print(str(num) + " - " + profile)
         num += 1
+    userin = input("Select one of the profiles from 1 - " + str(num-1) + "\n>>")
     try:
-        selected_input = input("Select one of the profiles from 1 - " + str(num-1) + "\n>>")
-        selected_profile = profiles[int(selected_input) - 1]
-
+        index = int(userin)-1
+        if index < num-1 and index > 0:
+            selected_profile = profiles[index]
+            return selected_profile
+        else:
+            print("Write a number from 1-" + str(len(profile)))
+            selectProfile(configs)
     except:
-        selected_input = input("Select one of the profiles from 1 - " + str(num-1) + "\n>>")
-        selected_profile = profiles[int(selected_input) - 1]
-    return selected_profile
+        print("Write a number from 1-" + str(len(profile)))
+        selectProfile(configs)

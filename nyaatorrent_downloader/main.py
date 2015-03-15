@@ -6,24 +6,25 @@ import os
 
 from nyaatorrent_downloader import print_factory, parse_site, downloader, config, print_configs
 
+global configs
 
 def defineConfigs():
+    global configs
     configs = config.readFromFile()
     if configs == None:
         configs = print_factory.createNewConfig()
     else:
         profile = print_factory.selectProfile(configs)
         configs.setProfile(profile)
-    return configs
 
 
 def run():
+    global configs
     os.system("mode con: cols=135 lines=50") #forces console-size to be at least 135 columns.
 
     baseurl = "http://www.nyaa.se/?page=search&cats=1_37&filter=0&term="
     #TODO create simple configs for recognizing favorite sub-group, and downloading that
     # if seeders are over a threshold.
-    #TODO optional "perma-config" for resolution-option. option for searching all resolutions?
 
 
     input = print_factory.start()
@@ -53,8 +54,8 @@ def run():
 
 
 
-    run() #loop untill escaped by user-input
+    run() #loop untill escaped by user-input (input q in print-factory)
 
-configs = defineConfigs()
+defineConfigs()
 
 run()
