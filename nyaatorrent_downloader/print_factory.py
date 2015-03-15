@@ -4,7 +4,7 @@ import tabulate
 import sys
 from colorama import init
 from termcolor import colored
-from nyaatorrent_downloader import config
+from nyaatorrent_downloader import print_configs
 
 def start():
     helper()
@@ -33,7 +33,7 @@ def select_torrent(max_index):
         elif torrent == 'm':
             return torrent
         elif torrent == 'c':
-            print("\n[ V ]iew settings, or [ C ]onfigure settings?")
+            print("\n[ V ] to view settings, or [ C ] to configure settings\n>>")
             view_or_set = input()
             if view_or_set.lower() == 'v':
                 viewConfigs()
@@ -45,23 +45,6 @@ def select_torrent(max_index):
             print('Please input a number...')
             select_torrent(max_index)
 
-
-def select_resolution():
-    arr = [480, 720, 1080]
-    print("Write 1 for 480p, 2 for 720p or 3 for 1080p")
-    userin = input("Please select resolution: \n>>")
-    ##verify that input is integer
-    try:
-        index = int(userin)
-        ##verify that input is in correct range
-        if index < 4 and index > 0:
-            return arr[index-1]
-        else:
-            print("Write a number from 1-3")
-            select_resolution()
-    except:
-        print("Write a number from 1-3")
-        select_resolution()
 
 
 def printSeries(sorted_series):
@@ -94,24 +77,6 @@ def chooseTorrent(sorted_series):
     else:
         return torrent
 
-
-def setConfigs():
-    resolution = select_resolution()
-    favorite = input("\nFavorite sub-group?")
-    threshold = input("\nThreshold?")
-    prompt = input("\nDo you want to be propmpted every time for settings?")
-    configs = config.Configuration(resolution, favorite,threshold,prompt)
-
-    configs.save()
-
-
-def viewConfigs():
-    configs = config.readFromFile()
-    if configs != None:
-        print("TEST")
-        output = configs.output()
-        for setting in output:
-            print(setting)
 
 
 
@@ -147,3 +112,12 @@ def evaluateNameColor(series):
         return 'blue'
     else:
         return 'white'
+
+def viewConfigs():
+    print_configs.viewConfigs()
+def setConfigs():
+    print_configs.setConfigs()
+def createNewConfig():
+    print_configs.createNewConfig()
+def selectProfile(configs):
+    return print_configs.selectProfile(configs)

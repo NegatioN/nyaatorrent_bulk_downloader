@@ -4,7 +4,17 @@ __author__ = 'NegatioN'
 
 import os
 
-from nyaatorrent_downloader import print_factory, parse_site, downloader, config
+from nyaatorrent_downloader import print_factory, parse_site, downloader, config, print_configs
+
+
+def defineConfigs():
+    configs = config.readFromFile()
+    if configs == None:
+        configs = print_factory.createNewConfig()
+    else:
+        profile = print_factory.selectProfile(configs)
+        configs.setProfile(profile)
+    return configs
 
 
 def run():
@@ -19,14 +29,14 @@ def run():
     input = print_factory.start()
 
     resolution = 0
-    configs = config.readFromFile()
+    #configs = config.readFromFile()
     #we have configs and want to load these.
     if configs != None:
         if configs.getPrompt() == True:  #user wants to be prompted every time.
             resolution = configs.getResolution()
     #we have no config-file and have to manually select options
     else:
-        resolution = print_factory.select_resolution()
+        resolution = print_configs.select_resolution()
     print("searching...")
 
 
@@ -44,5 +54,7 @@ def run():
 
 
     run() #loop untill escaped by user-input
+
+configs = defineConfigs()
 
 run()

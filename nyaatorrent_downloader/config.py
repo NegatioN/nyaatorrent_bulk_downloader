@@ -11,6 +11,7 @@ import configparser
 class Configuration:
     def __init__(self, config_dict):
         self.config_dict = config_dict
+        self.profile = 'DEFAULT'
 
     #constructor from file
     @classmethod
@@ -21,11 +22,11 @@ class Configuration:
         prompt = config_list[3].strip() == "True"       #if True, prompt True
         return cls(resolution, favorite_subber, fav_threshold, prompt)
     @classmethod
-    def fromoptions(cls, resolution, favorite_subber, fav_threshold, prompt_for_config):
+    def fromoptions(cls,profileName, resolution, favorite_subber, fav_threshold, prompt_for_config):
         dictionary = {}
         dictionary['DEFAULT'] = {'resolution' : 720, 'favorite_subber' : "[HorribleSubs]",
                                  'fav_threshold' : 10, 'prompt_on_query' : True}
-        dictionary['USER'] = {'resolution' : resolution, 'favorite_subber' : favorite_subber,
+        dictionary[profileName] = {'resolution' : resolution, 'favorite_subber' : favorite_subber,
                          'fav_threshold' : fav_threshold, 'prompt_on_query' : prompt_for_config}
         #resolution as int.
         #name of favorite subbers
@@ -34,13 +35,20 @@ class Configuration:
         return cls(dictionary)
 
     def getPrompt(self):
-        return self.config_dict.getboolean('DEFAULT', 'prompt_on_query')
+        return self.config_dict.getboolean(self.profile, 'prompt_on_query')
     def getResolution(self):
-        return int(self.config_dict['DEFAULT']['resolution'])
+        return int(self.config_dict[self.profile]['resolution'])
     def getFavorite(self):
-        return self.config_dict['DEFAULT']['favorite_subber']
+        return self.config_dict[self.profile]['favorite_subber']
     def getThreshold(self):
-        return self.config_dict['DEFAULT']['fav_threshold']
+        return self.config_dict[self.profile]['fav_threshold']
+    def getProfiles(self):  #returns a list of all the saved profiles in configs.
+        profile_list = []
+        for user in self.config_dict:
+            profile_list.append(user)
+        return profile_list
+    def setProfile(self, profile):
+        self.profile = profile
 
     #outputs a list-item for each option with [name - value]
     def output(self):
@@ -76,7 +84,6 @@ def readFromFile():
         config.read('configs.ini')
         return Configuration(config)
     else:
-        print("returning None")
         return None
 
 
