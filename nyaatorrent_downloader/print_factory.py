@@ -109,7 +109,9 @@ def viewConfigs():
     configs = config.readFromFile()
     if configs != None:
         print("TEST")
-        print(configs.output())
+        output = configs.output()
+        for setting in output:
+            print(setting)
 
 
 

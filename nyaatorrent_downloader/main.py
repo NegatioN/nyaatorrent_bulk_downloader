@@ -18,11 +18,12 @@ def run():
 
     input = print_factory.start()
 
+    resolution = 0
     configs = config.readFromFile()
     #we have configs and want to load these.
     if configs != None:
-        if configs.prompt == True:  #user wants to be prompted every time.
-            resolution = configs.resolution
+        if configs.getPrompt() == True:  #user wants to be prompted every time.
+            resolution = configs.getResolution()
     #we have no config-file and have to manually select options
     else:
         resolution = print_factory.select_resolution()
