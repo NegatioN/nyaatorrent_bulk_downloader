@@ -17,13 +17,13 @@ def defineConfigs():
         profile = print_factory.selectProfile(configs)
         configs.setProfile(profile)
 
+#TODO create setting for searching non-english subbed anime
 
 def run():
     global configs
     os.system("mode con: cols=135 lines=50") #forces console-size to be at least 135 columns.
 
     baseurl = "http://www.nyaa.se/?page=search&cats=1_37&filter=0&term="
-    #TODO create simple configs for recognizing favorite sub-group, and downloading that
     # if seeders are over a threshold.
 
 
@@ -42,7 +42,7 @@ def run():
 
 
 
-    sorted_series_list = parse_site.parse_query(baseurl, input, resolution)
+    sorted_series_list = parse_site.parse_query(baseurl, input, resolution, configs)
 
     print_factory.printSeries(sorted_series_list)
 

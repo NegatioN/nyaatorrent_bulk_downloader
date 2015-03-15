@@ -13,18 +13,18 @@ from nyaatorrent_downloader import regex_treatment as rt
 #TODO check series-name with regards to whitespace/underscores
 #TODO implement show series if is_series
 
-def parse_query(url, query, resolution):
+def parse_query(url, query, resolution, configs):
     soup_list = getAllSoup(url, query)
-    return findAllSeries(soup_list, resolution)
+    return findAllSeries(soup_list, resolution, configs)
 
 
 #Finds a list of series, sorted by number of average seeders.
-def findAllSeries(soup_list, resolution):
+def findAllSeries(soup_list, resolution, configs):
     torrents = []
     while soup_list:
         oi.createTorrentList(soup_list.pop(), torrents)
 
-    series_dictionary = oi.organizeTorrentsToSeries(torrents, resolution)
+    series_dictionary = oi.organizeTorrentsToSeries(torrents, resolution, configs)
     sorted_series = oi.outputSeries(series_dictionary)
     return sorted_series
 

@@ -8,6 +8,7 @@ class Series:
         self.seeders = 0
         self.size = 0
         self.is_aplus = False
+        self.is_favorite = False
 
     #Adds a torrent to the torrent_list if it's missing
     def addTorrent(self, torrent):
@@ -32,6 +33,10 @@ class Series:
         return self.size/1024/1024   #outbout gb
     def setIsAplus(self):
         self.is_aplus = True
+    def setIsFavorite(self):
+        self.is_favorite = True
+    def getIsFavorite(self):
+        return self.is_favorite
 
     #returns the average seeder number. Total_seeders/list.length
     def getAverageSeeders(self):

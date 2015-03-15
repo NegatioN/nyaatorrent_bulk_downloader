@@ -2,27 +2,17 @@ __author__ = 'NegatioN'
 
 from nyaatorrent_downloader import config
 
+#Edit settings of the selected profile.
 def setConfigs(configs):
     configuration = config.readFromFile()
 
     if configuration == None:
         print("There doesn't seem to be any configs yet.\n")
         return
-    profileName = configs.getCurrentProfile
-    config_tuples = configuration.getEditConfigs(profileName)
-
-    newSettings = {}
-    for setting in config_tuples:
-        currentSetting = setting[0]
-        if currentSetting == 'resolution':
-            newInput = select_resolution()
-        else:
-            newInput = input(currentSetting + "\n>>")
-
-        newSettings[currentSetting] = newInput
-    configuration.config_dict[profileName] = newSettings
-    configuration.save()
-    viewConfigs(profileName)
+    profileName = configs.getCurrentProfile()
+    profile_dict = createConfigDict()
+    configs.insertProfile(profile_dict, profileName)
+    viewConfigs(configs)
 
 def createNewConfig():
     wantToCreate = input("Do you want to create new configs?\n>>").lower()
@@ -37,25 +27,16 @@ def makeConfig():
     configuration = config.readFromFile()
 
     profileName = input("Write a profile-name\n>>")
-
-    resolution = select_resolution()
-    favorite_subber = input("What's your favorite sub-group?\n>>")
-    try:
-        threshold = int(input("How many seeders should the group have for it to appear?\n>>"))
-    except:
-        threshold = int(input("How many seeders should the group have for it to appear?\n>>"))
-    prompt = input("Do you want to be prompted for resolution before each search?\n>>")
+    profile_dict = createConfigDict()
 
     #Does a set of configuration exist from before?
     if configuration == None:
-        configs = config.Configuration.fromoptions(profileName,resolution,favorite_subber,threshold, prompt)
+        configs = config.Configuration.fromoptions(profileName,profile_dict)
         configs.setProfile(profileName)
         configs.save()
         return configs
     else:
-        profileDict = {'resolution' : resolution, 'favorite_subber' : favorite_subber,
-                       'fav_threshold' : threshold, 'prompt_on_query' : prompt}
-        configuration.insertProfile(profileDict, profileName)
+        configuration.insertProfile(profile_dict, profileName)
         return configuration
 
 #Output configs of current user to console
@@ -106,3 +87,17 @@ def selectProfile(configs):
     except:
         print("Write a number from 1-" + str(len(profile)))
         selectProfile(configs)
+
+def createConfigDict():
+    resolution = select_resolution()
+    favorite_subber = input("What's your favorite sub-group?\n>>")
+    try:
+        threshold = int(input("How many seeders should the group have for it to appear?\n>>"))
+    except:
+        threshold = int(input("How many seeders should the group have for it to appear?\n>>"))
+    prompt = input("Do you want to be prompted for resolution before each search? yes/no\n>>")
+
+    profileDict = {'resolution' : resolution, 'favorite_subber' : favorite_subber,
+               'fav_threshold' : threshold, 'prompt_on_query' : prompt}
+
+    return profileDict

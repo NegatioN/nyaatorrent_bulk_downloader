@@ -27,7 +27,6 @@ def findSeriesName(torrent):
         return removeEpisodeNumber(string_array[0], torrent.getEpisode())
 
 
-
 #determines if the current torrent_name tested has the resolution we want
 def isCorrectResolution(torrent_name, resolution):  #takes string, int
     resolution = str(resolution) + 'p'  #example 720 becomes 720p

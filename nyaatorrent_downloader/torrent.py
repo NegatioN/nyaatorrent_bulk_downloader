@@ -26,6 +26,7 @@ class Torrent:
             self.episode_number = 0
 
         self.is_aplus = findAPlus(tr_soup)
+        self.sub_group = findGroupName(self.name)
 
 
     #Get-methods, don't know if this is the standard in Python
@@ -43,6 +44,8 @@ class Torrent:
         return self.seeders
     def getIsAplus(self):
         return self.is_aplus
+    def getSubGroup(self):
+        return self.sub_group
 
 ####METHODS THAT ARE CALLED ON INIT OF TORRENT-OBJECT ######
 
@@ -95,4 +98,11 @@ def findAPlus(tr_soup):
         return tr_soup['class'][0] == 'aplus'   #checks for the aplus tlistrow class-tag on nyaa.se
     except:
         return False
+
+def findGroupName(torrent_name):
+    string_array = re.split(r"\[(.*?)\]", torrent_name, re.IGNORECASE)   #ignore start of torrent (sub-group)
+    try:
+        return string_array[1].lower()
+    except:
+        return None
 

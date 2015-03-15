@@ -22,12 +22,11 @@ class Configuration:
         prompt = config_list[3].strip() == "True"       #if True, prompt True
         return cls(resolution, favorite_subber, fav_threshold, prompt)
     @classmethod
-    def fromoptions(cls,profileName, resolution, favorite_subber, fav_threshold, prompt_for_config):
+    def fromoptions(cls,profileName, profile_dict):
         dictionary = {}
         dictionary['DEFAULT'] = {'resolution' : 720, 'favorite_subber' : "[HorribleSubs]",
                                  'fav_threshold' : 10, 'prompt_on_query' : True}
-        dictionary[profileName] = {'resolution' : resolution, 'favorite_subber' : favorite_subber,
-                         'fav_threshold' : fav_threshold, 'prompt_on_query' : prompt_for_config}
+        dictionary[profileName] = profile_dict
         #resolution as int.
         #name of favorite subbers
         #threshold of seeders to let user select torrents from fav_subber
@@ -69,10 +68,13 @@ class Configuration:
     def getEditConfigs(self, profileName):
         config_tuples = []
 
-        for key in self.config_dict[profileName]:  #finds list of ini-keys
-            config_tuple = key, self.config_dict[profileName][key]
-            config_tuples.append(config_tuple)
-        return config_tuples
+        for user in self.config_dict:
+            if user == profileName:
+                for key in self.config_dict[user]:
+                    config_tuple = key, self.config_dict[profileName][key]
+                    config_tuples.append(config_tuple)
+                return config_tuples
+        return None
 
 
     #writes the output of a config to a new file with the name configs.

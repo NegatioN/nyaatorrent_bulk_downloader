@@ -12,23 +12,31 @@ from nyaatorrent_downloader import series as ser
 
 #sorts all tuples into lists for their respective series, within a dictionary
 #takes in a tuple with download_url, torrent_name, torrent_size
-def organizeTorrentsToSeries(torrents, resolution):
+def organizeTorrentsToSeries(torrents, resolution, configs):
     series_dictionary = {} #dict holding all series -> torrents within series
 
+    favorite_subber = configs.getFavorite()
     for torrent in torrents:
         if torrent.getSeeders() > 0:                 #disregards the torrent if it has 0 seeders
             series_name = rt.findSeriesName(torrent) #get name of series from torrent
             if rt.isCorrectResolution(torrent.getName(), resolution):  #only keep torrents containing the given resolution. 720p 360p etc.
                 aplus = False       #if series is aplus content
+                favorite = False
                 if torrent.getIsSeries():
                     series_name = torrent.getName()
                 if torrent.getIsAplus():
                     series_name = series_name + " A+ content"
                     aplus = True
+                elif torrent.getSubGroup() == favorite_subber:
+                    series_name = series_name + " [" + torrent.getSubGroup() + "]"
+                    favorite = True
                 if series_name not in series_dictionary:
                     series_dictionary[series_name] = ser.Series(series_name) #create a new series-object
                     if aplus:
                         series_dictionary[series_name].setIsAplus()
+                    elif favorite:
+                        series_dictionary[series_name].setIsFavorite()
+
                 series_dictionary[series_name].addTorrent(torrent)
 
     return series_dictionary

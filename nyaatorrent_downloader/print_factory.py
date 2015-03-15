@@ -113,6 +113,8 @@ def evaluateHealth(series):
 def evaluateNameColor(series):
     if series.getIsAplus():
         return 'blue'
+    elif series.getIsFavorite():
+        return 'green'
     else:
         return 'white'
 
