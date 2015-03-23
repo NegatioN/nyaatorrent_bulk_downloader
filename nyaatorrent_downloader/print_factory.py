@@ -30,7 +30,7 @@ def select_torrent(max_index, configs):
     except:
         if torrent == 'q':
             return torrent
-        elif torrent == 'm':
+        elif torrent == 's':
             return torrent
         elif torrent == 'c':
             print("\n[ V ] to view settings, [ M ] to make a new profile, or [ C ] to configure settings\n>>")
