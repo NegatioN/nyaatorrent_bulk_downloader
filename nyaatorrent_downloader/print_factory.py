@@ -128,3 +128,5 @@ def createNewConfig():
     return print_configs.createNewConfig()
 def selectProfile(configs):
     return print_configs.selectProfile(configs)
+def select_resolution():
+    return print_configs.select_resolution()

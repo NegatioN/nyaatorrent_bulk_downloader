@@ -35,8 +35,10 @@ def run():
 
     #we have configs and want to load these.
     if configs != None:
-        if configs.getPrompt() == True:  #user wants to be prompted every time.
+        if configs.getPrompt() == False:  #user wants to use configs.
             resolution = configs.getResolution()
+        else:                              #user wants to be prompted every time.
+            resolution = print_factory.select_resolution()
     #we have no config-file and have to manually select options
     else:
         resolution = print_configs.select_resolution()
