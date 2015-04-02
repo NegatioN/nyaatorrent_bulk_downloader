@@ -78,7 +78,7 @@ def selectProfile(configs):
     userin = input("Select one of the profiles from 1 - " + str(num-1) + "\n>>")
     try:
         index = int(userin)-1
-        if index < num-1 and index > 0:
+        if index < num-1 and index >= 0:
             selected_profile = profiles[index]
             return selected_profile
         else:

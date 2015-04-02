@@ -8,6 +8,7 @@ from nyaatorrent_downloader import print_factory, parse_site, downloader, config
 
 global configs
 
+## gets a settings-profile from .ini
 def defineConfigs():
     global configs
     configs = config.readFromFile()
@@ -29,8 +30,9 @@ def run():
 
     input = print_factory.start()
 
+    #define resolution to avoid errors.
     resolution = 0
-    #configs = config.readFromFile()
+
     #we have configs and want to load these.
     if configs != None:
         if configs.getPrompt() == True:  #user wants to be prompted every time.

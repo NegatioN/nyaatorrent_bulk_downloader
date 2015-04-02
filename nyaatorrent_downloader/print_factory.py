@@ -41,9 +41,11 @@ def select_torrent(max_index, configs):
             elif view_or_set.lower() == 'm':
                 createNewConfig()
                 return
-            else:
+            elif view_or_set.lower() == 'c':
                 setConfigs(configs)
                 return
+            else:
+                return torrent
         else:
             print('Please input a number...')
             select_torrent(max_index)
