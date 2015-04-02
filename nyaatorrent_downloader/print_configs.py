@@ -34,7 +34,7 @@ def makeConfig():
         configs = config.Configuration.fromoptions(profileName,profile_dict)
         configs.setProfile(profileName)
         configs.save()
-        return configs
+        return config.readFromFile();
     else:
         configuration.insertProfile(profile_dict, profileName)
         return configuration
