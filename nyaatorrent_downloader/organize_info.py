@@ -23,7 +23,7 @@ def organizeTorrentsToSeries(torrents, resolution, configs):
     count = 0
     for torrent in torrents:
         if torrent.getSeeders() > 0:                                    #disregards the torrent if it has 0 seeders
-            if rt.isCorrectResolution(torrent.getName(), resolution):  #only keep torrents containing the given resolution. 720p 360p etc.
+            if rt.isCorrectResolution(torrent.getName(), resolution) or torrent.getIsAplus():  #only keep torrents containing the given resolution. 720p 360p etc.
                 putTorrentInDict(torrent, series_dictionary, favorite_subber)
         #break if seeders are 0. this means all torrents after this should be 0, if we sort by seeders.
         else:
