@@ -14,7 +14,7 @@ class TestFindSeriesName(TestCase):
         self.torrent3 = tor.Torrent.dummy("[Taka]_Naruto_Shippuuden_177_[720p][6EC1F800].mp4", 177)
         self.clippedTorrentName3 = "Naruto Shippuuden".lower()
         self.torrent4 = tor.Torrent.dummy("[BakedFish] Ansatsu Kyoushitsu (2015) - 06 [720p][AAC].mp4", 6)
-        self.clippedTorrentName4 = "Ansatsu Kyoushitsu".lower()
+        self.clippedTorrentName4 = "Ansatsu Kyoushitsu (2015)".lower()
 
     def test_findSeriesName(self):
         value = rt.findSeriesName(self.torrent)
@@ -25,8 +25,8 @@ class TestFindSeriesName(TestCase):
         self.failUnless(self.clippedTorrentName2 == value)
         value = rt.findSeriesName(self.torrent3)
         print(value)
-        self.failUnlesss(self.clippedTorrentName3 == value)
+        self.failUnless(self.clippedTorrentName3 == value)
         value = rt.findSeriesName(self.torrent4)
         print(value)
-        self.failUnlesss(self.clippedTorrentName4 == value)
+        self.failUnless(self.clippedTorrentName4 == value)
 
