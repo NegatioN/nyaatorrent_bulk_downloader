@@ -3,7 +3,7 @@ from cx_Freeze import setup, Executable
 
 setup(
     name='nyatorrent_downloader',
-    version='0.2.1',
+    version='0.2.2',
    # packages=['tests'],
     url='https://github.com/NegatioN/nyaatorrent_bulk_downloader',
     license='',

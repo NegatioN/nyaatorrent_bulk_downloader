@@ -41,7 +41,7 @@ def createTorrentList(page_soup, torrents):
 
     for list in table:
         for tr in list.find_all("tr", {'class':re.compile('.*(tlistrow).*')}): #each row that contains a torrent
-            torrents.append(tor.Torrent(tr)) #creates a new torrent-object of the tr_soup
+            torrents.append(tor.Torrent.fromsoup(tr)) #creates a new torrent-object of the tr_soup
 
     return torrents
 

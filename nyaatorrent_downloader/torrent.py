@@ -9,24 +9,41 @@ import re
 #constructor currently takes in a tr_soup from beautifulsoup4
 class Torrent:
 
-    #takes in a tr_soup from nyaa.se
-    def __init__(self, tr_soup):
-        torrent_seeders = tr_soup.find('td', {'class':'tlistsn'})  #gets seeders of torrent
+    #default-constructor
+    def __init__(self, url, name, seeders, size, is_aplus):
+        self.url = url
+        self.name = name
+        self.seeders = seeders
+        self.size = size
+        self.is_series = isTorrentSeries(name)
+        self.sub_group = findGroupName(name)
+        self.is_aplus = is_aplus
 
-        self.seeders = findSeeders(torrent_seeders)
-        self.url = tr_soup.find('td', {'class':'tlistdownload'}).a['href']  #gets link to download torrent directly
-        self.name = tr_soup.find('td', {'class':'tlistname'}).a.contents[0]  #gets name of torrent
-        size_text = tr_soup.find('td', {'class':'tlistsize'}).contents[0]
-        self.size = getTorrentSize(size_text)                                #computes the size of the torrent in kilobytes
 
-        self.is_series = isTorrentSeries(self.name)
         if not self.is_series:                  #doesnt make sense to set episode number if it's a complete series.
             self.episode_number = findEpisodeNumber(self.name)
         else:
             self.episode_number = 0
 
-        self.is_aplus = findAPlus(tr_soup)
-        self.sub_group = findGroupName(self.name)
+    #dummy constructor to do tests of various methods.
+    @classmethod
+    def dummy(cls, torrent_name, episode):
+        return cls(None, torrent_name, None, None, None)
+
+    #creates a torrent-object from a BS4 TR-soup element. assumes nyaa.se syntax
+    @classmethod
+    def fromsoup(cls, tr_soup):
+
+        torrent_seeders = tr_soup.find('td', {'class':'tlistsn'})  #gets seeders of torrent
+
+        seeders = findSeeders(torrent_seeders)
+        url = tr_soup.find('td', {'class':'tlistdownload'}).a['href']  #gets link to download torrent directly
+        name = tr_soup.find('td', {'class':'tlistname'}).a.contents[0]  #gets name of torrent
+        size_text = tr_soup.find('td', {'class':'tlistsize'}).contents[0]
+        size = getTorrentSize(size_text)                                #computes the size of the torrent in kilobytes
+
+        is_aplus = findAPlus(tr_soup)
+        return cls(url, name, seeders, size, is_aplus)
 
 
     #Get-methods, don't know if this is the standard in Python
