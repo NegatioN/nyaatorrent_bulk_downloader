@@ -3,7 +3,6 @@ __author__ = 'NegatioN'
 import re
 
 #TODO implement is_movie field, regex torrent for movie etc.
-#TODO let be is_series if "Season x" regex match?
 
 #this class represents a torrent, and contains all the information we want to track about it.
 #constructor currently takes in a tr_soup from beautifulsoup4
@@ -18,7 +17,6 @@ class Torrent:
         self.is_series = isTorrentSeries(name)
         self.sub_group = findGroupName(name)
         self.is_aplus = is_aplus
-
 
         if not self.is_series:                  #doesnt make sense to set episode number if it's a complete series.
             self.episode_number = findEpisodeNumber(self.name)
@@ -90,16 +88,22 @@ def getTorrentSize(size_string):
 
 def isTorrentSeries(torrent_name):
     series_regex = re.compile('((\d+)-(\d+))')    #a series torrent is usually specified by ep 1-400 for example
-    complete_regex = re.compile(r'(complete)|(season)')
-    if re.search(series_regex, torrent_name) is not None or re.search(complete_regex, torrent_name.lower()):
+    complete_regex = re.compile(r'(complete)|(season)') #or by containing the words "season x" or "complete"
+    if re.search(series_regex, torrent_name) is not None \
+            or re.search(complete_regex, torrent_name.lower())is not None:
         return True
     else:
         return False
 
+#Matches first digit after "-", otherwise first digit.
 def findEpisodeNumber(torrent_name):
     try:
-        array = re.split('(\d+)',torrent_name) #episode-number should i 95% of the cases be the first number after some text.
-        return int(array[1])
+        array = re.split('-', torrent_name)
+        array = re.split('(\d+)',array[1])
+        try:
+            return int(array[1])    #return first digit after "-"
+        except:
+            return re.split('(\d+)',torrent_name)[1] #return first digit
     except:
         return 0
 
